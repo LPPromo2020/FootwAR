@@ -1,0 +1,37 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 1
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "74630710879-r45knob14cedj24kc5jmgq5s5gbaunbr.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTWMyeaJVywxweNu3p2PEzEDX4y64M1rw"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:74630710879:ios:717d001f3f5437cbc8bdea", 
+        "android_client_info": {
+          "package_name": "com.LPPromo2020.FootwAR"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "footwar-c0754.appspot.com", 
+    "project_id": "footwar-c0754", 
+    "firebase_url": "https://footwar-c0754.firebaseio.com", 
+    "project_number": "74630710879"
+  }
+}
