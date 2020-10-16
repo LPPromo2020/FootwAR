@@ -22,8 +22,12 @@ public class FireBaseManager : Singleton<FireBaseManager>
 
     public enum GameStatue { VICTORY = 1, DEFEAT = 0 };
 
-    private void Start()
+    public DatabaseReference RealTimeDatabse() => m_drRootReference;
+
+    protected override void Awake()
     {
+        base.Awake();
+        
         FirebaseApp.DefaultInstance.Options.DatabaseUrl = new System.Uri("https://footwar-c0754.firebaseio.com/");
 
         m_faAuth = FirebaseAuth.DefaultInstance;
@@ -181,10 +185,6 @@ public class FireBaseManager : Singleton<FireBaseManager>
 
             Debug.Log($"[FireBaseManager] Player informations is saved: v -> {m_uUser.nbVictorys}, d -> {m_uUser.nbDefeats}");
         });
-    }
-
-    private void CreateRoom()
-    {
     }
 
     private AuthError getError(AggregateException error)

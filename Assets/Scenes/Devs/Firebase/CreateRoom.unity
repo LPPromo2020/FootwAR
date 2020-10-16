@@ -433,6 +433,7 @@ GameObject:
   - component: {fileID: 481815937}
   - component: {fileID: 481815936}
   - component: {fileID: 481815935}
+  - component: {fileID: 481815939}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -520,6 +521,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &481815939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481815934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1135162b10100535196f634199f80853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ifNameRoom: {fileID: 994700053}
+  m_ifPassword: {fileID: 770169720}
+  m_tPasswordUsed: {fileID: 726530523}
 --- !u!1 &707920923
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,8 +884,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 770169721}
   m_TextComponent: {fileID: 797224755}
   m_Placeholder: {fileID: 311341609}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -1004,6 +1020,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797224753}
   m_CullTransparentMesh: 0
+--- !u!1 &972637153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 972637155}
+  - component: {fileID: 972637154}
+  - component: {fileID: 972637156}
+  m_Layer: 0
+  m_Name: RoomManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &972637154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972637153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e51e51df3ad870195f6ed92323b272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Password: 
+  RoomName: 
+  PlayerNumber: 0
+  StartTime: 240
+--- !u!4 &972637155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972637153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &972637156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972637153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1faaf526c542a0cb195911975e2244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &994700051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,7 +1301,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1458829274}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 481815939}
+        m_MethodName: Create
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1458829274
 MonoBehaviour:
   m_ObjectHideFlags: 0

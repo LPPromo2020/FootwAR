@@ -1,7 +1,4 @@
-﻿
-using UnityEngine;
-
-public class User
+﻿public class User
 {
     public int nbDefeats, nbVictorys;
     private string m_sID, m_sPseudo, m_sEmail;

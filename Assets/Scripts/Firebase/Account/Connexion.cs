@@ -8,7 +8,7 @@ using UnityEngine.UI;
  */
 
 
-public class connexion : MonoBehaviour
+public class Connexion : MonoBehaviour
 {
     [SerializeField] InputField m_ifEmail;
     [SerializeField] InputField m_ifPassword;

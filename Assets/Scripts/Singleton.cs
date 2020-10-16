@@ -6,9 +6,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
     public static T Instance { get; private set; }
 
-    [SerializeField] private bool m_bDestroyOnLoad = true;
-
-    protected void Awake()
+    protected virtual void Awake()
     {
         if (Instance)
         {
@@ -18,9 +16,6 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
         Instance = (T) this;
 
-        if (!m_bDestroyOnLoad)
-        {
-            DontDestroyOnLoad(Instance);
-        }
+        DontDestroyOnLoad(Instance);
     }
 }
