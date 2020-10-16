@@ -13,7 +13,7 @@ public class Launcher : MonoBehaviour
     [SerializeField]
     private LauncherPanel m_launcherPanel;
 
-    private void Start()
+    public void EnterState()
     {
         InitializeEventsToLauch();
         m_eventToLaunch = m_listEventsToLaunch[0];

@@ -12,15 +12,7 @@ public class EventWidget : MonoBehaviour
 
     private bool m_isSelected = false;
 
-    [SerializeField]
-    private GameObject m_eventPrefab;
-
-    public enum enumEvents
-    {
-        bomb,
-        wall,
-        smoke
-    }
+    //private GameObject m_eventPrefab;
 
 
     public void SetEvent(Events _event)
@@ -40,13 +32,13 @@ public class EventWidget : MonoBehaviour
                 break;
         }
 
-        Setup(_event);
+        //Setup(_event);
     }
 
-    public void Setup(Events _event)
+    /*public void Setup(Events _event)
     {
         m_eventPrefab = _event.GetEventCard();
-    }
+    }*/
 
     public void OnSelection()
     {
