@@ -28,7 +28,7 @@ public class LauncherPanel : MonoBehaviour
         eventWidget.SetEvent(_event);
         m_listEventWidget.Add(eventWidget);
    
-        Instantiate(eventWidget.GetEvent().GetEventCard());
+        Instantiate(eventWidget.GetEvent().GetEventCard(), transform);
     }
 
     public void RemoveEventWidget(int _id)
