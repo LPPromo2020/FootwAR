@@ -5,9 +5,7 @@ using UnityEngine;
 
 abstract public class Events
 {
-    private GameObject m_eventCardPrefab;
-    private float m_duration;
-    private float m_probality;
-
     public abstract void ThrowEvent();
+    public abstract GameObject GetEventCard();
+    public abstract string GetName();
 }
