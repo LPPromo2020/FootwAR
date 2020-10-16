@@ -7,12 +7,13 @@ using Firebase.Auth;
 using Firebase.Database;
 
 using System.Threading.Tasks;
+using System;
 
 /**
     MARC, JULIE, LOUIS, ROMUALD
  */
 
-public class FireBaseManager : MonoBehaviour
+public class FireBaseManager : Singleton<FireBaseManager>
 {
     private FirebaseAuth m_faAuth;
     private FirebaseUser m_fuUser;
@@ -23,46 +24,77 @@ public class FireBaseManager : MonoBehaviour
 
     private void Start()
     {
-        FirebaseApp.DefaultInstance.Options.DatabaseUrl = new System.Uri("BASE DE DONNEE");
+        FirebaseApp.DefaultInstance.Options.DatabaseUrl = new System.Uri("https://footwar-c0754.firebaseio.com/");
 
         m_faAuth = FirebaseAuth.DefaultInstance;
         m_drRootReference = FirebaseDatabase.DefaultInstance.RootReference;
+
     }
 
-    private void SignUp(string email, string password)
+    public IEnumerator SignUp(string pseudo, string email, string password, Action<AuthError> callback)
     {
-        m_faAuth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if (task.IsCanceled)
+        AuthError error = 0;
+        Task newtask = m_faAuth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+            if (task.IsCanceled || task.IsFaulted)
             {
                 // Canceled
-                return;
-            }
-
-            if (task.IsFaulted)
-            {
                 Debug.LogError(task.Exception);
+                if(error == 0) error = getError(task.Exception);
                 return;
             }
 
             m_fuUser = task.Result;
 
-            m_drRootReference.Child("players").Child(m_fuUser.UserId).SetRawJsonValueAsync("{nbDefeats:0, nbVictorys:0}").ContinueWith(task2 => {
+            Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
+            {
+                DisplayName = pseudo
+            };
+            m_fuUser.UpdateUserProfileAsync(profile).ContinueWith(task3 => {
+                if (task3.IsCanceled)
+                {
+                    Debug.LogError("UpdateUserProfileAsync was canceled.");
+                    if (error == 0) error = getError(task3.Exception);
+                    return;
+                }
+                if (task3.IsFaulted)
+                {
+                    Debug.LogError("UpdateUserProfileAsync encountered an error: " + task3.Exception);
+                    if (error == 0) error = getError(task3.Exception);
+                    return;
+                }
+
+                Debug.Log("User profile updated successfully.");
+            });
+
+
+            m_uUser = new User(
+                "",
+                "",
+                "",
+                0,
+                0);
+            string json = JsonUtility.ToJson(m_uUser);
+            Debug.Log(json);
+            m_drRootReference.Child("players").Child(m_fuUser.UserId).SetRawJsonValueAsync(json).ContinueWith(task2 => {
                 if (task2.IsCanceled || task2.IsFaulted)
                 {
-                    Debug.LogError(task.Exception);
+                    Debug.LogError(task2.Exception);
                     return;
                 }
 
                 Debug.Log("[FireBaseManager] Création du compte effectué et de ces données");
-
-                CreateUser();
             });
         });
+        while (!newtask.IsCompleted) yield return null;
+        if (error == 0) StartCoroutine(CreateUser());
+        callback(error);
+
     }
 
-    private void SignIn(string email, string password)
+    public IEnumerator SignIn(string email, string password, Action<AuthError> callback)
     {
-        m_faAuth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        AuthError error = 0;
+        Task newtask = m_faAuth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled)
             {
                 // Canceled
@@ -72,23 +104,26 @@ public class FireBaseManager : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError(task.Exception);
+                if (error == 0) error = getError(task.Exception);
                 return;
             }
 
             m_fuUser = task.Result;
-
-            // Fonction de connection
-
-            CreateUser();
+            
         });
+        while (!newtask.IsCompleted) yield return null;
+        if(error == 0) StartCoroutine(CreateUser());
+        callback(error);
     }
 
-    private void CreateUser()
+    private IEnumerator CreateUser()
     {
-        m_drRootReference.Child("players").Child(m_fuUser.UserId).GetValueAsync().ContinueWith(task => {
+        DataSnapshot result = null;
+           Task newtask = m_drRootReference.Child("players").Child(m_fuUser.UserId).GetValueAsync().ContinueWith(task => {
             if (task.IsCanceled)
             {
                 // Canceled
+                Debug.LogError("CreateUser : Canceled");
                 return;
             }
             
@@ -98,18 +133,19 @@ public class FireBaseManager : MonoBehaviour
                 return;
             }
 
-            DataSnapshot result = task.Result;
+            result = task.Result;
 
-            m_uUser = new User(
-                m_fuUser.UserId,
-                m_fuUser.DisplayName,
-                m_fuUser.Email,
-                (int) result.Child("nbDefeats").Value,
-                (int) result.Child("nbVictorys").Value
-            );
+           });
+        while (!newtask.IsCompleted) yield return null;
+        m_uUser = new User(
+            m_fuUser.UserId,
+            m_fuUser.DisplayName,
+            m_fuUser.Email,
+            int.Parse(result.Child("nbDefeats").Value.ToString()),
+            int.Parse(result.Child("nbVictorys").Value.ToString())
+        );
 
-            Debug.Log($"[FireBaseManager] {m_uUser.PSEUDO()}: v -> {m_uUser.nbVictorys}, d -> {m_uUser.nbDefeats}");
-        }); 
+        Debug.Log($"[FireBaseManager] {m_uUser.PSEUDO()}: v -> {m_uUser.nbVictorys}, d -> {m_uUser.nbDefeats}");
     }
 
     private void SaveUserInformation(GameStatue gameStatue)
@@ -149,6 +185,18 @@ public class FireBaseManager : MonoBehaviour
 
     private void CreateRoom()
     {
+    }
 
+    private AuthError getError(AggregateException error)
+    {
+        foreach (Exception exception in error.Flatten().InnerExceptions)
+        {
+            Firebase.FirebaseException firebaseEx = exception as Firebase.FirebaseException;
+            if (firebaseEx != null)
+            {
+                return (Firebase.Auth.AuthError)firebaseEx.ErrorCode;
+            }
+        }
+        return 0;
     }
 }
