@@ -6,7 +6,6 @@ public class EventWall : Events
 {
     private string m_name = "Wall";
 
-    [SerializeField]
     private GameObject m_eventCardPrefab;
 
     [SerializeField]
@@ -27,9 +26,14 @@ public class EventWall : Events
         throw new System.NotImplementedException();
     }
 
-    public override GameObject GetEventCard() 
+    public override GameObject GetEventCard()
     {
         return m_eventCardPrefab;
+    }
+
+    public override void SetEventCard(GameObject _eventCardPrefab) 
+    {
+        m_eventCardPrefab = _eventCardPrefab;
     }
     
     public override string GetName()

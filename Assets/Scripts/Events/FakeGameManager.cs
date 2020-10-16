@@ -7,9 +7,16 @@ public class FakeGameManager : MonoBehaviour
     [SerializeField]
     private List<Events> m_listEvents = new List<Events>();
 
-    public EventWall eventWall;
-    public EventSmoke eventSmoke;
-    public EventBomb eventBomb;
+    [SerializeField]
+    private GameObject eventWallPrefab;
+    [SerializeField]
+    private GameObject eventSmokePrefab;
+    [SerializeField]
+    private GameObject eventBombPrefab;
+
+    private EventWall eventWall;
+    private EventSmoke eventSmoke;
+    private EventBomb eventBomb;
 
     private void Start()
     {
@@ -23,6 +30,10 @@ public class FakeGameManager : MonoBehaviour
 
     public void Initialization()
     {
+        eventWall.SetEventCard(eventWallPrefab);
+        eventSmoke.SetEventCard(eventSmokePrefab);
+        eventBomb.SetEventCard(eventBombPrefab);
+
         m_listEvents.Add(eventWall);
         m_listEvents.Add(eventSmoke);
         m_listEvents.Add(eventBomb);

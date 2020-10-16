@@ -10,6 +10,7 @@ public class Launcher : MonoBehaviour
     [SerializeField]
     private int m_eventsNbMax;
 
+    [SerializeField]
     private LauncherPanel m_launcherPanel;
 
     private void Start()

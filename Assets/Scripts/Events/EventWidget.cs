@@ -58,11 +58,7 @@ public class EventWidget : MonoBehaviour
             GetComponent<LauncherPanel>().OnWidgetSelected();
 
             //Element visuel
-        }
-
-        // m_isSelected = true;
-
-        
+        }     
     }
 
     public void OffSelection()

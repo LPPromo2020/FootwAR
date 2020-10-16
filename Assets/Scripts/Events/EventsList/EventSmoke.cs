@@ -32,6 +32,11 @@ public class EventSmoke : Events
         return m_eventCardPrefab;
     }
 
+    public override void SetEventCard(GameObject _eventCardPrefab)
+    {
+        m_eventCardPrefab = _eventCardPrefab;
+    }
+
     public override string GetName()
     {
         return m_name;
