@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class EventWidget : MonoBehaviour
 {
-    private int m_id;
+    private int m_idWidget;
 
     private Events m_eventLinked;
+
+    private bool m_isSelected = false;
 
     [SerializeField]
     private GameObject m_eventPrefab;
@@ -48,23 +50,47 @@ public class EventWidget : MonoBehaviour
 
     public void OnSelection()
     {
-        GetComponent<Launcher>().SetEventToLaunch(m_id);
+        if (!m_isSelected)
+        {
+            GetComponent<Launcher>().SetEventToLaunch(m_idWidget);
 
-        //Element visuel
+            GetComponent<LauncherPanel>().DisableCards();
+            GetComponent<LauncherPanel>().OnWidgetSelected();
+
+            //Element visuel
+        }
+
+        // m_isSelected = true;
+
+        
     }
 
     public void OffSelection()
     {
-        //
+        if (m_isSelected)
+        {
+            //Element visuel
+        }
+
     }
 
     public int GetId()
     {
-        return m_id;
+        return m_idWidget;
     }
 
     public Events GetEvent()
     {
         return m_eventLinked;
+    }
+
+    public bool GetIsSelected()
+    {
+        return m_isSelected;
+    }
+
+    public void SetIsSelected(bool _isSelected)
+    {
+        m_isSelected = false;
     }
 }

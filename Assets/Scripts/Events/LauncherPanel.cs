@@ -6,6 +6,8 @@ public class LauncherPanel : MonoBehaviour
 {
     private List<EventWidget> m_listEventWidget = new List<EventWidget>();
 
+    private int m_idWidgetSelected;
+
     //Make the link between the UI and the events's datas
     public void Inflate(List<Events> _listEventsToLaunch)
     {
@@ -34,5 +36,33 @@ public class LauncherPanel : MonoBehaviour
         Destroy(m_listEventWidget[_id].GetEvent().GetEventCard());
         m_listEventWidget.Remove(m_listEventWidget[_id]);
     }
+    
+    public void OnWidgetSelected()//Listener
+    {
+        for(int i = 0; i < m_listEventWidget.Count; i++)
+        {
+            if (m_listEventWidget[i].GetIsSelected())
+            {
+                m_idWidgetSelected = m_listEventWidget[i].GetId();
+            }
+        }
+    }
 
+    public void DisableCards()
+    {
+        for (int i = 0; i < m_listEventWidget.Count; i++)
+        {
+            m_listEventWidget[i].SetIsSelected(false);
+        }
+    }
+
+    public void RemoveWidget()
+    {
+        RemoveEventWidget(m_idWidgetSelected);
+    }
+
+    /*public int GetIdWidgetSelected()
+    {
+        return m_idWidgetSelected;
+    }*/
 }

@@ -28,16 +28,8 @@ public class FakeGameManager : MonoBehaviour
         m_listEvents.Add(eventBomb);
     }
 
-    /*[System.Serializable]//usefull?
-    public enum enumEvents
-    {
-        bomb,
-        wall,
-        smoke
-    }*/
-
     public List<Events> GetEvents()
     {
-        return m_listEvents
+        return m_listEvents;
     }
 }

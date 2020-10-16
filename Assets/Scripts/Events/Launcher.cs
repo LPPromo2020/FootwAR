@@ -54,6 +54,7 @@ public class Launcher : MonoBehaviour
     {
         m_eventToLaunch.ThrowEvent();
 
+        m_launcherPanel.RemoveWidget();
         //m_launcherPanel.RemoveEventWidget();
     }
 }
