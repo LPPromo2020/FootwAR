@@ -7,8 +7,10 @@ public class Launcher : MonoBehaviour
     private List<Events> m_listEventsToLaunch = new List<Events>();
     private Events m_eventToLaunch = null;
 
+    private List<Events> m_listEvents = new List<Events>();
+
     [SerializeField]
-    private int m_eventsNbMax;
+    private int m_eventsNbMax = 3;
 
     [SerializeField]
     private LauncherPanel m_launcherPanel;
@@ -29,26 +31,30 @@ public class Launcher : MonoBehaviour
     //Initialise launcher's cards
     public void InitializeEventsToLauch()
     {
-        for(int i = 0; i < m_eventsNbMax; i++) { AddEvent(); }
+        for(int i = 0; i < m_eventsNbMax; i++) 
+        {
+            AddEvent();
+        }
     } 
 
     //Add an event selected randomly 
     public void AddEvent()
     {
-        if(m_listEventsToLaunch.Count == m_eventsNbMax)
+        if (m_listEventsToLaunch.Count == m_eventsNbMax)
         {
             Debug.Log("Votre main est deja pleine !");
             return;
         }
 
-        List<Events> listEvents = GetComponent<FakeGameManager>().GetEvents();
+        //m_listEvents = GetComponent<FakeGameManager>().GetEvents();
+        m_listEvents = FakeGameManager._instance.GetEvents();
 
         //Select random event
-        int i = Random.Range(0, listEvents.Count);//Get intance       
-        m_listEventsToLaunch.Add(listEvents[i]);
+        int i = Random.Range(0, m_listEvents.Count);//Get intance       
+        m_listEventsToLaunch.Add(m_listEvents[i]);
 
         //Add event at Panel
-        m_launcherPanel.AddEventWidget(listEvents[i]);
+        m_launcherPanel.AddEventWidget(m_listEvents[i]);
     }
 
     public void ThrowCurrentEvent()

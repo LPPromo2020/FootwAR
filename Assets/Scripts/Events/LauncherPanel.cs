@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LauncherPanel : MonoBehaviour
 {
+    [SerializeField] 
+    private GameObject eventWidgetGO = null;
+
     private List<EventWidget> m_listEventWidget = new List<EventWidget>();
 
     private int m_idWidgetSelected;
@@ -18,17 +21,44 @@ public class LauncherPanel : MonoBehaviour
         {
             EventWidget eventWidget = null;
             m_listEventWidget.Add(eventWidget);
-            m_listEventWidget[i].SetEvent(_listEventsToLaunch[i]);
+            //m_listEventWidget[i].SetEvent(_listEventsToLaunch[i]);
         }  
     }
 
     public void AddEventWidget(Events _event)
     {
-        EventWidget eventWidget = null;        
+        GameObject _eventWidgetGO = Instantiate(GetCardToBuild(_event), transform);
+
+        /*GameObject _eventWidgetGO = Instantiate(eventWidgetGO, transform);
+
+        EventWidget eventWidget = _eventWidgetGO.GetComponent<EventWidget>();
+
         eventWidget.SetEvent(_event);
-        m_listEventWidget.Add(eventWidget);
-   
-        Instantiate(eventWidget.GetEvent().GetEventCard(), transform);
+        m_listEventWidget.Add(eventWidget);*/
+
+    }
+
+    public GameObject GetCardToBuild(Events _event)
+    {
+        GameObject cardToBuild = null;
+        FakeGameManager instance = FakeGameManager._instance;
+
+        switch (_event.GetName())
+        {
+            case "Wall":
+                cardToBuild = instance.GetEventWall();
+                break;
+
+            case "Smoke":
+                cardToBuild = instance.GetEventSmoke();
+                break;
+
+            case "Bomb":
+                cardToBuild = instance.GetEventBomb();
+                break;
+        }
+
+        return cardToBuild;
     }
 
     public void RemoveEventWidget(int _id)

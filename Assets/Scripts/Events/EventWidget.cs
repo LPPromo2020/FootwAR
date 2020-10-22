@@ -9,8 +9,11 @@ public class EventWidget : MonoBehaviour
     private int m_idWidget;
 
     private Events m_eventLinked;
-
+    
     private bool m_isSelected = false;
+
+    [SerializeField]
+    private GameObject m_eventPrefab;
 
     //private GameObject m_eventPrefab;
 
@@ -32,13 +35,13 @@ public class EventWidget : MonoBehaviour
                 break;
         }
 
-        //Setup(_event);
+        Setup(_event);
     }
 
-    /*public void Setup(Events _event)
+    public void Setup(Events _event)
     {
         m_eventPrefab = _event.GetEventCard();
-    }*/
+    }
 
     public void OnSelection()
     {

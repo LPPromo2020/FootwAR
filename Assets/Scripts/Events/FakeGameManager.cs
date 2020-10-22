@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FakeGameManager : MonoBehaviour
 {
+    public static FakeGameManager _instance;
+
     [SerializeField]
     private Launcher launcher;
 
@@ -21,10 +23,23 @@ public class FakeGameManager : MonoBehaviour
     private EventSmoke eventSmoke;
     private EventBomb eventBomb;
 
+    void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     private void Start()
     {
         Initialization();
-        launcher.EnterState();
+        launcher.EnterState();     
     }
 
     private void Update()
@@ -50,5 +65,20 @@ public class FakeGameManager : MonoBehaviour
     public List<Events> GetEvents()
     {
         return m_listEvents;
+    }
+
+    public GameObject GetEventWall()
+    {
+        return eventWallPrefab;
+    }
+
+    public GameObject GetEventBomb()
+    {
+        return eventBombPrefab;
+    }
+
+    public GameObject GetEventSmoke()
+    {
+        return eventSmokePrefab;
     }
 }
