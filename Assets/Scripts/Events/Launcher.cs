@@ -20,7 +20,7 @@ public class Launcher : MonoBehaviour
         InitializeEventsToLauch();
         m_eventToLaunch = m_listEventsToLaunch[0];
 
-        m_launcherPanel.Inflate(m_listEventsToLaunch);
+        //m_launcherPanel.Inflate(m_listEventsToLaunch);
     }
 
     public void SetEventToLaunch(int _idEvent)

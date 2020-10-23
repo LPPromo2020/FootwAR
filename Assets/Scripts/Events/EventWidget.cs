@@ -7,16 +7,11 @@ using UnityEngine;
 public class EventWidget : MonoBehaviour
 {
     private int m_idWidget;
-
-    private Events m_eventLinked;
-    
+    private Events m_eventLinked;  
     private bool m_isSelected = false;
 
     [SerializeField]
-    private GameObject m_eventPrefab;
-
-    //private GameObject m_eventPrefab;
-
+    private GameObject m_outline;
 
     public void SetEvent(Events _event)
     {
@@ -35,34 +30,31 @@ public class EventWidget : MonoBehaviour
                 break;
         }
 
-        Setup(_event);
+        //Setup(_event);
     }
 
-    public void Setup(Events _event)
+    /*public void Setup(Events _event)
     {
         m_eventPrefab = _event.GetEventCard();
-    }
+    }*/
 
     public void OnSelection()
     {
         if (!m_isSelected)
         {
-            GetComponent<Launcher>().SetEventToLaunch(m_idWidget);
+            //GetComponent<Launcher>().SetEventToLaunch(m_idWidget);
 
-            GetComponent<LauncherPanel>().DisableCards();
-            GetComponent<LauncherPanel>().OnWidgetSelected();
+            LauncherPanel._instance.DisableCards();
+            LauncherPanel._instance.OnWidgetSelected();
 
-            //Element visuel
-        }     
+            m_outline.SetActive(true);
+        }
+
     }
 
     public void OffSelection()
     {
-        if (m_isSelected)
-        {
-            //Element visuel
-        }
-
+        m_outline.SetActive(false);
     }
 
     public int GetId()
@@ -82,6 +74,11 @@ public class EventWidget : MonoBehaviour
 
     public void SetIsSelected(bool _isSelected)
     {
-        m_isSelected = false;
+        m_isSelected = _isSelected;
+
+        if (!_isSelected)
+        {
+            OffSelection();
+        }
     }
 }

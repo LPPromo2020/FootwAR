@@ -22,8 +22,6 @@ public class EventWall : Events
     public override void ThrowEvent()
     {
         Debug.Log("WALL EVENT");
-
-        throw new System.NotImplementedException();
     }
 
     public override GameObject GetEventCard()
