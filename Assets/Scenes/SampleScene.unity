@@ -752,11 +752,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fCollisionForce: 100
-  BouncinessSlider: {fileID: 794582067}
-  BouncyMaterial: {fileID: 13400000, guid: eba9528302a0a934b9c5a04fcd263b1f, type: 2}
-  MassSlider: {fileID: 103048409}
-  CollisionSlider: {fileID: 1857801344}
-  FallForceSlider: {fileID: 1897696546}
+  m_GOBouncinessSlider: {fileID: 794582067}
+  m_GOBouncyMaterial: {fileID: 13400000, guid: eba9528302a0a934b9c5a04fcd263b1f, type: 2}
+  m_GOMassSlider: {fileID: 103048409}
+  m_GOCollisionSlider: {fileID: 1857801344}
+  m_GOFallForceSlider: {fileID: 1897696546}
 --- !u!75 &244787523
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -2778,9 +2778,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fSpeed: 0.2
   m_fJumpForce: 1
-  UiBallController: {fileID: 1222399915}
-  SpeedSlider: {fileID: 1903906057}
-  JumpSlider: {fileID: 6560969}
+  m_GOUiBallController: {fileID: 1222399915}
+  m_GOSpeedSlider: {fileID: 1903906057}
+  m_GOJumpSlider: {fileID: 6560969}
 --- !u!54 &930648305
 Rigidbody:
   m_ObjectHideFlags: 0
