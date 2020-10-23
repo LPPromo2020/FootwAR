@@ -45,11 +45,14 @@ public class EventWidget : MonoBehaviour
             //GetComponent<Launcher>().SetEventToLaunch(m_idWidget);
 
             LauncherPanel._instance.DisableCards();
-            LauncherPanel._instance.OnWidgetSelected();
+
+            m_isSelected = true;
+            //LauncherPanel._instance.OnWidgetSelected();
 
             m_outline.SetActive(true);
         }
 
+        Launcher._instance.SetEventToLaunch(m_eventLinked);
     }
 
     public void OffSelection()

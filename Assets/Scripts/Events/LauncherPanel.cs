@@ -68,17 +68,18 @@ public class LauncherPanel : MonoBehaviour
         m_listEventWidget.Remove(m_listEventWidget[_id]);
     }
     
-    public void OnWidgetSelected()//Listener
+    /*public void OnWidgetSelected()//Listener
     {
         for(int i = 0; i < m_listEventWidget.Count; i++)
         {
             if (m_listEventWidget[i].GetIsSelected() == true)
             {
+                Debug.Log(m_listEventWidget[i].name);
                 m_idWidgetSelected = m_listEventWidget[i].GetId();
-                launcher.SetEventToLaunch(m_idWidgetSelected);
+                Launcher._instance.SetEventToLaunch(m_idWidgetSelected);
             }
         }
-    }
+    }*/
 
     public void DisableCards()
     {

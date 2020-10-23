@@ -226,7 +226,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.3742123}
-  m_AnchoredPosition: {x: 0, y: -0.19999695}
+  m_AnchoredPosition: {x: 0, y: -0.19998169}
   m_SizeDelta: {x: 0, y: -0.44032288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &327053408
@@ -948,12 +948,12 @@ PrefabInstance:
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 445.5
       objectReference: {fileID: 0}
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -72.93834
       objectReference: {fileID: 0}
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
@@ -973,7 +973,7 @@ PrefabInstance:
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
@@ -983,7 +983,7 @@ PrefabInstance:
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1451891902818417284, guid: 16707bf96b1c1e244ad712303acf53c3,
         type: 3}
@@ -999,6 +999,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SmokeWidget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1451891902818417287, guid: 16707bf96b1c1e244ad712303acf53c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16707bf96b1c1e244ad712303acf53c3, type: 3}
@@ -1073,12 +1078,12 @@ PrefabInstance:
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 570.5
       objectReference: {fileID: 0}
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -72.93834
       objectReference: {fileID: 0}
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
@@ -1098,7 +1103,7 @@ PrefabInstance:
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
@@ -1108,7 +1113,7 @@ PrefabInstance:
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5829623114112195128, guid: 7c79e64437b658940bd2b5f7c40e172d,
         type: 3}
@@ -1124,6 +1129,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WallWidget
+      objectReference: {fileID: 0}
+    - target: {fileID: 5829623114112195131, guid: 7c79e64437b658940bd2b5f7c40e172d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c79e64437b658940bd2b5f7c40e172d, type: 3}
@@ -1198,12 +1208,12 @@ PrefabInstance:
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320.5
       objectReference: {fileID: 0}
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -72.93834
       objectReference: {fileID: 0}
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
@@ -1223,7 +1233,7 @@ PrefabInstance:
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
@@ -1233,7 +1243,7 @@ PrefabInstance:
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1326872923667983476, guid: baee5b32bde54044cab7f5a74f92a6c9,
         type: 3}
@@ -1249,6 +1259,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BombWidget
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326872923667983479, guid: baee5b32bde54044cab7f5a74f92a6c9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477765200731684693, guid: baee5b32bde54044cab7f5a74f92a6c9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: baee5b32bde54044cab7f5a74f92a6c9, type: 3}

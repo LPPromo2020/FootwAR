@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
+    public static Launcher _instance;
+
     private List<Events> m_listEventsToLaunch = new List<Events>();
     private Events m_eventToLaunch = null;
 
@@ -23,10 +25,27 @@ public class Launcher : MonoBehaviour
         //m_launcherPanel.Inflate(m_listEventsToLaunch);
     }
 
-    public void SetEventToLaunch(int _idEvent)
+    #region Singleton
+    void Awake()
     {
-        m_eventToLaunch = m_listEventsToLaunch[_idEvent];
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
+    #endregion
+
+    public void SetEventToLaunch(Events _event/*int _idEvent*/)
+    {
+        m_eventToLaunch = _event;
+        Debug.Log("carte a lancer  : " + m_eventToLaunch.GetName());
+    }
+
 
     //Initialise launcher's cards
     public void InitializeEventsToLauch()
