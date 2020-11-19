@@ -28,7 +28,8 @@ public class Connexion : MonoBehaviour
         }
         else
         {            
-            StartCoroutine(UserManager.Instance.Connection(m_ifEmail.text, m_ifPassword.text, (connect, authError) => {
+            StartCoroutine(UserManager.Instance.Connection(m_ifEmail.text, m_ifPassword.text, (connect, authError) =>
+            {
                 switch (authError)
                 {
                     case AuthError.UserNotFound:
@@ -38,6 +39,8 @@ public class Connexion : MonoBehaviour
                         m_tErrorText.text = "Le mot de passe est invalide";
                         break;
                 }
+
+                if (connect) SceneLoader.LoadScene("MainMenu");               
             }));            
         }
     }
