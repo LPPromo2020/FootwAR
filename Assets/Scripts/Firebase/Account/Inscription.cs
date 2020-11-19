@@ -8,13 +8,14 @@ using UnityEngine.UI;
  */
 
 
-public class inscription : MonoBehaviour
+public class Inscription : MonoBehaviour
 {
     [SerializeField] InputField m_ifPseudo;
     [SerializeField] InputField m_ifEmail;
     [SerializeField] InputField m_ifPassword;
     [SerializeField] InputField m_ifPasswordVerif;
     [SerializeField] Text m_tErrorText;
+
     public void playerInscription()
     {
         m_tErrorText.text = "";
@@ -40,7 +41,7 @@ public class inscription : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FireBaseManager.Instance.SignUp(m_ifPseudo.text, m_ifEmail.text, m_ifPassword.text, authError => {
+            StartCoroutine(UserManager.Instance.CreateAccount(m_ifPseudo.text, m_ifEmail.text, m_ifPassword.text, authError => {
                 switch (authError)
                 {
                     case AuthError.EmailAlreadyInUse:

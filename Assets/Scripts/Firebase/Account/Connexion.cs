@@ -6,8 +6,6 @@ using UnityEngine.UI;
 /**
     MARC, JULIE, LOUIS, ROMUALD
  */
-
-
 public class Connexion : MonoBehaviour
 {
     [SerializeField] InputField m_ifEmail;
@@ -30,7 +28,7 @@ public class Connexion : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FireBaseManager.Instance.SignIn(m_ifEmail.text, m_ifPassword.text, authError => {
+            StartCoroutine(UserManager.Instance.Connection(m_ifEmail.text, m_ifPassword.text, (connect, authError) => {
                 switch (authError)
                 {
                     case AuthError.UserNotFound:
@@ -39,12 +37,11 @@ public class Connexion : MonoBehaviour
                     case AuthError.WrongPassword:
                         m_tErrorText.text = "Le mot de passe est invalide";
                         break;
-                    default:
-                        break;
                 }
             }));
         }
     }
+
     bool checkIfIsEmail(string email)
     {
         Regex regex = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"

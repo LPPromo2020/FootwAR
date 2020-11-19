@@ -12,13 +12,12 @@ public class CreateRoom : MonoBehaviour
 
     public void Create()
     {
-        if (m_ifPassword.text == "" || m_ifNameRoom.text == "")
+        if (m_ifNameRoom.text == "")
         {
             Debug.LogError("Une des informations est vide");
             return;
         }
-        
-        string password = m_tPasswordUsed.isOn ? m_ifPassword.text : "";
-        RoomManager.Instance.CreateRoom(m_ifNameRoom.text, password, 4);
+
+        StartCoroutine(RoomManager.Instance.CreateRoom(m_ifNameRoom.text, m_ifPassword.text, 4, 260));
     }
 }
