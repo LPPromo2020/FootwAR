@@ -11,9 +11,12 @@ public class LauncherPanel : MonoBehaviour
 
     private List<EventWidget> m_listEventWidget = new List<EventWidget>();
 
+    private List<GameObject> m_listWidgetGO = new List<GameObject>();
+
     private int m_idWidgetSelected = -1;
 
-    private Launcher launcher;
+    public int IdWidgetSelected { get => m_idWidgetSelected; set => m_idWidgetSelected = value; }
+    public List<EventWidget> ListEventWidget { get => m_listEventWidget; set => m_listEventWidget = value; }
 
     void Awake()
     {
@@ -53,19 +56,35 @@ public class LauncherPanel : MonoBehaviour
 
     public void AddEventWidget(Events _event)
     {
-        GameObject _eventWidgetGO = Instantiate(GetCardToBuild(_event), transform);
+        GameObject eventWidgetGO = Instantiate(GetCardToBuild(_event), transform);
 
-        EventWidget eventWidget = _eventWidgetGO.GetComponent<EventWidget>();
-
+        EventWidget eventWidget = eventWidgetGO.GetComponent<EventWidget>();
+        
+        //Link event to the eventWidget
         eventWidget.SetEvent(_event);
-        m_listEventWidget.Add(eventWidget);
 
+        //Set wigdetID
+        eventWidget.IdWidget = m_listEventWidget.Count;
+
+        //Add the the eventWidget to the list
+        m_listEventWidget.Add(eventWidget);
+        m_listWidgetGO.Add(eventWidgetGO);
     }
 
     public void RemoveEventWidget(int _id)
     {
-        Destroy(m_listEventWidget[_id].GetEvent().GetEventCard());
+        Debug.Log("ID DE L'EVENT LANCE : " + _id);
         m_listEventWidget.Remove(m_listEventWidget[_id]);
+
+            //Restart the selection by default 
+                //m_listEventWidget[0].OnSelection();
+
+        Destroy(m_listWidgetGO[_id]);
+
+        m_listWidgetGO.Remove(m_listWidgetGO[_id]);
+
+        //Update the events's id
+        UpdateEventsID();
     }
     
     /*public void OnWidgetSelected()//Listener
@@ -87,11 +106,36 @@ public class LauncherPanel : MonoBehaviour
         {
             m_listEventWidget[i].SetIsSelected(false);
         }
+        m_idWidgetSelected = -1;
     }
 
     public void RemoveWidget()
     {
-        RemoveEventWidget(m_idWidgetSelected);
+        if(m_idWidgetSelected != -1)
+        {
+            RemoveEventWidget(m_idWidgetSelected);
+        }
+        else
+        {
+            Debug.Log("Remove impossible ! ");
+        }
+    }
+
+    public void UpdateEventsID()
+    {
+        int size = m_listEventWidget.Count;
+
+        /*if(size == 0)
+        {
+            m_listEventWidget[0].IdWidget = 0;
+        }
+        else
+        {*/
+            for (int i = 0; i < m_listEventWidget.Count; i++)
+            {
+                m_listEventWidget[i].IdWidget = i;
+            }
+        /*}*/
     }
 
     /*public int GetIdWidgetSelected()

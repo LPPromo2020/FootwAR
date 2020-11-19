@@ -23,8 +23,6 @@ public class EventBomb : Events
     public override void ThrowEvent()
     {
         Debug.Log("BOMB EVENT");
-
-        throw new System.NotImplementedException();
     }
 
     public override GameObject GetEventCard()

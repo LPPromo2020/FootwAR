@@ -13,6 +13,8 @@ public class EventWidget : MonoBehaviour
     [SerializeField]
     private GameObject m_outline;
 
+    public int IdWidget { get => m_idWidget; set => m_idWidget = value; }
+
     public void SetEvent(Events _event)
     {
         switch (_event.GetName())
@@ -50,20 +52,34 @@ public class EventWidget : MonoBehaviour
             //LauncherPanel._instance.OnWidgetSelected();
 
             m_outline.SetActive(true);
-        }
 
-        Launcher._instance.SetEventToLaunch(m_eventLinked);
+
+
+
+            //Tell the Lauchner what event to launch
+            Launcher._instance.SetEventToLaunch(m_eventLinked);
+
+            //Reference the Id of the current selected widget to the panel
+            LauncherPanel._instance.IdWidgetSelected = m_idWidget;
+
+            Debug.Log(LauncherPanel._instance.IdWidgetSelected);
+        }
     }
 
     public void OffSelection()
     {
-        m_outline.SetActive(false);
+        if(this != null)
+        {
+            m_outline.SetActive(false);
+            m_isSelected = false;
+        }
+
     }
 
-    public int GetId()
+    /*public int GetId()
     {
         return m_idWidget;
-    }
+    }*/
 
     public Events GetEvent()
     {

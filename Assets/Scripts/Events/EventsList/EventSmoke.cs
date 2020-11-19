@@ -23,8 +23,6 @@ public class EventSmoke : Events
     public override void ThrowEvent()
     {
         Debug.Log("SMOKE EVENT");
-
-        throw new System.NotImplementedException();
     }
 
     public override GameObject GetEventCard()

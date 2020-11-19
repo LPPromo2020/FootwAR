@@ -59,7 +59,7 @@ public class Launcher : MonoBehaviour
     //Add an event selected randomly 
     public void AddEvent()
     {
-        if (m_listEventsToLaunch.Count == m_eventsNbMax)
+        if (m_launcherPanel.ListEventWidget.Count == m_eventsNbMax)
         {
             Debug.Log("Votre main est deja pleine !");
             return;
@@ -70,7 +70,7 @@ public class Launcher : MonoBehaviour
 
         //Select random event
         int i = Random.Range(0, m_listEvents.Count);//Get intance       
-        m_listEventsToLaunch.Add(m_listEvents[i]);
+        //m_listEventsToLaunch.Add(m_listEvents[i]);
 
         //Add event at Panel
         m_launcherPanel.AddEventWidget(m_listEvents[i]);
@@ -78,9 +78,19 @@ public class Launcher : MonoBehaviour
 
     public void ThrowCurrentEvent()
     {
-        m_eventToLaunch.ThrowEvent();
+        if(m_eventToLaunch != null)
+        {
+            m_launcherPanel.RemoveWidget();
 
-        m_launcherPanel.RemoveWidget();
-        //m_launcherPanel.RemoveEventWidget();
+            m_launcherPanel.DisableCards();
+
+            m_eventToLaunch.ThrowEvent();
+            //m_launcherPanel.RemoveEventWidget();
+        }
+        else
+        {
+            Debug.Log("Aucune carte selectionnée !");
+        }
+        m_eventToLaunch = null;
     }
 }
