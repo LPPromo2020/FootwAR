@@ -25,6 +25,8 @@ public class UserManager : Singleton<UserManager>
     
     public IEnumerator Connection(string email, string password, Action<bool, AuthError> callback)
     {
+        Debug.Log(gameObject.name);
+
         if (email == "" || password == "")
         {
             Debug.LogWarning($"[{GetType()}] Une des information est vide");

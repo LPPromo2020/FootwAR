@@ -27,7 +27,7 @@ public class Connexion : MonoBehaviour
             m_tErrorText.text = "Le mot de passe est invalide";
         }
         else
-        {
+        {            
             StartCoroutine(UserManager.Instance.Connection(m_ifEmail.text, m_ifPassword.text, (connect, authError) => {
                 switch (authError)
                 {
@@ -38,7 +38,7 @@ public class Connexion : MonoBehaviour
                         m_tErrorText.text = "Le mot de passe est invalide";
                         break;
                 }
-            }));
+            }));            
         }
     }
 
