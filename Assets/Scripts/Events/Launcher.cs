@@ -20,7 +20,7 @@ public class Launcher : MonoBehaviour
     public void EnterState()
     {
         InitializeEventsToLauch();
-        m_eventToLaunch = m_listEventsToLaunch[0];
+        //m_eventToLaunch = m_listEventsToLaunch[0];
 
         //m_launcherPanel.Inflate(m_listEventsToLaunch);
     }

@@ -73,7 +73,6 @@ public class LauncherPanel : MonoBehaviour
 
     public void RemoveEventWidget(int _id)
     {
-        Debug.Log("ID DE L'EVENT LANCE : " + _id);
         m_listEventWidget.Remove(m_listEventWidget[_id]);
 
             //Restart the selection by default 

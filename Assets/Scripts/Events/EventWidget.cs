@@ -61,8 +61,6 @@ public class EventWidget : MonoBehaviour
 
             //Reference the Id of the current selected widget to the panel
             LauncherPanel._instance.IdWidgetSelected = m_idWidget;
-
-            Debug.Log(LauncherPanel._instance.IdWidgetSelected);
         }
     }
 
