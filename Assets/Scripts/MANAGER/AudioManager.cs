@@ -22,7 +22,6 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (SceneManager.GetActiveScene().name == "InGameScene" )
         {
-            //m_asMainMenu.clip = m_audioClipMusicToPlay;
             m_asMainMenu.Stop();
         }
     }
