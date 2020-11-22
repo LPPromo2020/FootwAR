@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4612710531251374393}
   - component: {fileID: 2177022526343912422}
-  - component: {fileID: 5980899175377276804}
   - component: {fileID: -485565647064670191}
+  - component: {fileID: 1492988211291221936}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -129,21 +129,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5980899175377276804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2538028461250168956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d87e99180a0da0449b2fe8ef50b0cd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_asMainMenu: {fileID: 2177022526343912422}
-  m_audioClipMusicToPlay: {fileID: 8300000, guid: 67c79b3cd12f97843b3249cd7c6206f5,
-    type: 3}
 --- !u!81 &-485565647064670191
 AudioListener:
   m_ObjectHideFlags: 0
@@ -152,3 +137,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2538028461250168956}
   m_Enabled: 1
+--- !u!114 &1492988211291221936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538028461250168956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c320bddf8bad394824798339393e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_asMainMenu: {fileID: 2177022526343912422}
+  m_audioClipMusicToPlay: {fileID: 8300000, guid: 67c79b3cd12f97843b3249cd7c6206f5,
+    type: 3}
