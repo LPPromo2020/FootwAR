@@ -153,6 +153,8 @@ MonoBehaviour:
   m_listPrefabsLoader:
   - {fileID: 7683765555716217565, guid: 924919fd5f9591845827b558624693fd, type: 3}
   - {fileID: 2538028461250168956, guid: 486eb886c6d7e2b478a071ba03950f52, type: 3}
+  - {fileID: 8160094870968944464, guid: e28d7881dddd32e029db039146661f79, type: 3}
+  - {fileID: 7774904750139670317, guid: 6422dadfabd1a81cab3f883cfee12617, type: 3}
 --- !u!4 &188627149
 Transform:
   m_ObjectHideFlags: 0
