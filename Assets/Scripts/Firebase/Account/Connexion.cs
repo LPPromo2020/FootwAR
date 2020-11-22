@@ -16,15 +16,15 @@ public class Connexion : MonoBehaviour
         m_tErrorText.text = "";
         if (m_ifEmail.text == "" || m_ifPassword.text == "")
         {
-            m_tErrorText.text = "Tous les champs ne sont pas renseignés";
+            NotificationsManager.Instance.AddNotification("Attention", "Tous les champs ne sont pas renseignés", 2);
         }
         else if (!checkIfIsEmail(m_ifEmail.text))
         {
-            m_tErrorText.text = "Veuilez entrer une vraie adresse mail";
+            NotificationsManager.Instance.AddNotification("Attention", "Veuilez entrer une adresse mail valide", 2);
         }
         else if (m_ifPassword.text.Length < 6)
         {
-            m_tErrorText.text = "Le mot de passe est invalide";
+            NotificationsManager.Instance.AddNotification("Attention", "Mot de passe de moins de 6 caractéres", 2);
         }
         else
         {            
@@ -33,10 +33,10 @@ public class Connexion : MonoBehaviour
                 switch (authError)
                 {
                     case AuthError.UserNotFound:
-                        m_tErrorText.text = "Aucun utilisateur ne correspond à cette adresse mail";
+                        NotificationsManager.Instance.AddNotification("Erreur", "Aucun utilisateur avec cette email n'existe", 2);
                         break;
                     case AuthError.WrongPassword:
-                        m_tErrorText.text = "Le mot de passe est invalide";
+                        NotificationsManager.Instance.AddNotification("Erreur", "Mot de passe invalide", 2);
                         break;
                 }
 

@@ -21,6 +21,7 @@ public class NotificationsManager : Singleton<NotificationsManager>
     [Header("Components")]
     [SerializeField] private RectTransform m_rtPosition;
     [SerializeField] private Button m_bClose;
+    [SerializeField] private CanvasScaler m_csCanvasScaler;
 
     [Header("Settings")]
     [Range(0.5f, 3f)]
@@ -41,18 +42,24 @@ public class NotificationsManager : Singleton<NotificationsManager>
 
     private void Start()
     {
+        m_csCanvasScaler.referenceResolution = new Vector2(Screen.width, Screen.height);
+
         float width = Screen.width * m_fPercentageWidthScreen / 100,
             height = Screen.height * m_fPercentageHeightScreen / 100;
         m_rtPosition.sizeDelta = new Vector2(width, height);
         m_rtPosition.localPosition = new Vector3(Screen.width / 2 - width / 2 - m_iOffSetPosition, Screen.height / 2 - height / 2 - m_iOffSetPosition, 0);
 
-        RectTransform title = m_tName.GetComponent<Text>().rectTransform;
-        title.sizeDelta = new Vector2(title.sizeDelta.x, height * (m_fTitleSpaceTake / 100));
-        title.localPosition = new Vector3(0, -title.sizeDelta.y / 2, 0);
+        RectTransform title = m_tName.rectTransform;
+        title.sizeDelta = new Vector2(width, height * (m_fTitleSpaceTake / 100));
+        Debug.Log($"Position: {title.localPosition}");
+        title.localPosition = new Vector3(0, height / 2 - title.sizeDelta.y / 2, 0);
+        Debug.Log($"Position: {title.localPosition}");
 
-        RectTransform message = m_tMessage.GetComponent<Text>().rectTransform;
-        message.sizeDelta = new Vector2(message.sizeDelta.x, height * ((100 - m_fTitleSpaceTake) / 100));
-        message.localPosition = new Vector3(0, message.sizeDelta.y / 2, 0);
+        RectTransform message = m_tMessage.rectTransform;
+        message.sizeDelta = new Vector2(width, height * ((100 - m_fTitleSpaceTake) / 100));
+        Debug.Log($"Position: {message.localPosition}");
+        message.localPosition = new Vector3(0, -(height / 2 - message.sizeDelta.y / 2), 0);
+        Debug.Log($"Position: {message.localPosition}");
 
         m_bClose.onClick.AddListener(CloseNotification);
     }
