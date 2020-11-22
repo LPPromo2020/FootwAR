@@ -30,26 +30,7 @@ public class SearchRooms : MonoBehaviour
         m_drRooms.ChildAdded += RoomIsCreate;
         m_drRooms.ChildRemoved += RoomIsRemove;
 
-        StartCoroutine(GetAllRooms());
-
         m_ifSearchInput.onValueChanged.AddListener(roomName => StartCoroutine(Search(roomName)));
-    }
-
-    private IEnumerator GetAllRooms()
-    {
-        Task<DataSnapshot> getRooms = m_drRooms.GetValueAsync();
-        while (!getRooms.IsCompleted) yield return null;
-
-        DataSnapshot rooms = getRooms.Result;
-        int count = m_iCountPrint;
-        foreach (DataSnapshot room in getRooms.Result.Children)
-        {
-            CreateRoom(room);
-
-            if (m_bPrintAllRooms && (count--) <= 0) yield break;
-
-            yield return null;
-        }
     }
 
     private IEnumerator Search(string roomName)
@@ -85,12 +66,20 @@ public class SearchRooms : MonoBehaviour
 
     private void RoomIsRemove(object sender, ChildChangedEventArgs args)
     {
-
+        m_listRooms.ForEach(room =>
+        {
+            if (room.Guid == args.Snapshot.Key)
+            {
+                Destroy(room.View);
+                m_listRooms.Remove(room);
+                return;
+            }
+        });
     }
 
     private void RoomIsCreate(object sender, ChildChangedEventArgs args)
     {
-
+        CreateRoom(args.Snapshot);
     }
 
     private struct Room
