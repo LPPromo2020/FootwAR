@@ -459,7 +459,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Auto
+  m_Text: Spectateurs
 --- !u!222 &75353992
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -840,7 +840,6 @@ GameObject:
   - component: {fileID: 217780786}
   - component: {fileID: 217780785}
   - component: {fileID: 217780784}
-  - component: {fileID: 217780787}
   m_Layer: 5
   m_Name: startButton
   m_TagString: Untagged
@@ -911,7 +910,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 217780787}
+      - m_Target: {fileID: 1120237375}
         m_MethodName: OnClick
         m_Mode: 5
         m_Arguments:
@@ -959,18 +958,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217780782}
   m_CullTransparentMesh: 0
---- !u!114 &217780787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217780782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &220663772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,7 +1027,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Rejoindre l'\xE9quipe  bleu"
+  m_Text: Bleu
 --- !u!222 &220663775
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1196,7 +1183,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Rejoindre l'\xE9quipe rouge"
+  m_Text: Rouge
 --- !u!222 &259106879
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2439,6 +2426,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078940597}
   m_CullTransparentMesh: 0
+--- !u!1 &1120237374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1120237376}
+  - component: {fileID: 1120237375}
+  m_Layer: 0
+  m_Name: MenuScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1120237375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120237374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInList: {fileID: 4109726268800613234, guid: adf1642575950374a9bc1b671054851f,
+    type: 3}
+  redTeam: {fileID: 0}
+  blueTeam: {fileID: 0}
+  specTeam: {fileID: 0}
+--- !u!4 &1120237376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120237374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1126987693
 GameObject:
   m_ObjectHideFlags: 0
@@ -2520,7 +2555,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1126987696}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1120237375}
+        m_MethodName: AddPlayerRed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1126987696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2852,7 +2898,7 @@ RectTransform:
   m_Children:
   - {fileID: 220663773}
   m_Father: {fileID: 1982119674}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2901,7 +2947,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1474057926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1120237375}
+        m_MethodName: AddPlayerBlue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1474057926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2951,7 +3008,6 @@ GameObject:
   - component: {fileID: 1476313116}
   - component: {fileID: 1476313115}
   - component: {fileID: 1476313114}
-  - component: {fileID: 1476313117}
   m_Layer: 5
   m_Name: quitButton
   m_TagString: Untagged
@@ -3022,7 +3078,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1476313117}
+      - m_Target: {fileID: 1120237375}
         m_MethodName: OnClick
         m_Mode: 5
         m_Arguments:
@@ -3070,18 +3126,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476313112}
   m_CullTransparentMesh: 0
---- !u!114 &1476313117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476313112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1524239147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,7 +3221,7 @@ RectTransform:
   m_Children:
   - {fileID: 75353990}
   m_Father: {fileID: 1982119674}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3226,7 +3270,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1598942162}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1120237375}
+        m_MethodName: AddPlayerSpec
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1598942162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3704,8 +3759,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1126987694}
-  - {fileID: 1598942160}
   - {fileID: 1474057924}
+  - {fileID: 1598942160}
   m_Father: {fileID: 1524239148}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

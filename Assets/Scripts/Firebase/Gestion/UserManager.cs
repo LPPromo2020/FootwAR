@@ -83,4 +83,9 @@ public class UserManager : Singleton<UserManager>
         m_fuUser = null;
         FireBaseManager.Instance.Auth.SignOut();
     }
+
+    public FirebaseUser getUser()
+    {
+        return m_fuUser;
+    }
 }

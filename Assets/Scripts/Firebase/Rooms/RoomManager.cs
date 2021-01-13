@@ -20,7 +20,7 @@ public class RoomManager : Singleton<RoomManager>
     private Team m_tRed = new Team(Team.TeamColor.RED);
     private Team m_tSpectator = new Team(Team.TeamColor.SPECTATOR);
 
-    // Ajouter la liste de bonus
+    // TODO (Romumu): Ajouter la liste de bonus
 
     public IEnumerator CreateRoom(string name, string password, int maxPlayer, float startTime)
     {
@@ -80,6 +80,36 @@ public class RoomManager : Singleton<RoomManager>
         yield break;
     }
 
+    public IEnumerator AddPlayerToTeamInDatabase(Team.TeamColor teamColor)
+    {
+        //DatabaseReference database = FireBaseManager.Instance.Database;
+        ////DatabaseReference room = database.Child("rooms").Child(m_sID);
+        //string team;
+
+        //switch (teamColor)
+        //{
+        //    case Team.TeamColor.BLUE:
+        //        team = "blue";
+        //        break;
+        //    case Team.TeamColor.RED:
+        //        team = "red";
+        //        break;
+        //    default:
+        //        team = "spectator";
+        //        break;
+        //}
+
+        //Task playerAdding = database.Child("rooms").Child(m_sID).Child("teams").Child(team).Child(UserManager.Instance.getUser().UserId).SetValueAsync(UserManager.Instance.getUser().DisplayName).ContinueWith(result => {
+        //    if (result.IsFaulted || result.IsCanceled)
+        //    {
+        //        Debug.Log("Erreur dans la création de la salle");
+        //        return;
+        //    }
+        //});
+        //while (!playerAdding.IsCompleted) yield return null;
+        yield break;
+    }
+
     private void AddBluePlayer(object sender, ChildChangedEventArgs args) {
         if (args.DatabaseError != null) {
             Debug.LogError("NewMemberOnTeam: " + args.DatabaseError.Message);
@@ -127,6 +157,14 @@ public class RoomManager : Singleton<RoomManager>
         yield break;
     }
 
+    //private string ToJsonPlayer()
+    //{
+    //    string json = "{";
+    //    // Player informations
+    //    json += $"\"{UserManager.Instance.getUser().DisplayName}\": \"{UserManager.Instance.getUser().UserId}\"";
+    //    return json + '}';
+    //}
+
     private string ToJson() {
         string json = "{";
         // Ball position
@@ -158,6 +196,11 @@ public class RoomManager : Singleton<RoomManager>
 
     ~RoomManager() {
         // FireBaseManagerEssaie.Instance.Database.Child("rooms").Child(m_sID).RemoveValueAsync();
+    }
+
+    public Team[] getTeams()
+    {
+        return new Team[] { m_tRed, m_tBlue, m_tSpectator };
     }
 }
 
