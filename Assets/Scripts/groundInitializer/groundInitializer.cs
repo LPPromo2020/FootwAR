@@ -19,6 +19,8 @@ public class groundInitializer : MonoBehaviour
     public List<ARRaycastHit> m_lARRayCastHit; // Liste de point trouvés par le raycastmanager
     public GameObject m_goPlanePrefab; // Prefab du plan
     public Material m_mGroundColor; // Materiel de couleur du terrain
+    public GameObject m_stade; // Prefab du stade
+    private bool isAlreadyGroundExist = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +33,8 @@ public class groundInitializer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        
+        if (Input.GetMouseButtonDown(0) && !isAlreadyGroundExist)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (m_rmRaycastManager.Raycast(ray, m_lARRayCastHit, UnityEngine.XR.ARSubsystems.TrackableType.PlaneEstimated))
@@ -54,10 +57,11 @@ public class groundInitializer : MonoBehaviour
 
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
-        GameObject gameGround = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject gameGround = Instantiate(m_stade);
+        //GameObject gameGround = GameObject.CreatePrimitive(PrimitiveType.Cube);
         gameGround.transform.position = m_lARRayCastHit[0].pose.position;
-        gameGround.transform.localScale = new Vector3(3f + (Random.value * 2), 0.01f, 5f + (Random.value * 2));
-        gameGround.GetComponent<MeshRenderer>().material = m_mGroundColor;
-
+        gameGround.transform.localScale = new Vector3(6f,6f,6f);
+        //gameGround.GetComponent<MeshRenderer>().material = m_mGroundColor;
+        isAlreadyGroundExist = true;
     }
 }
