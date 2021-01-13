@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 
 public class groundInitializer : MonoBehaviour
@@ -20,7 +21,12 @@ public class groundInitializer : MonoBehaviour
     public GameObject m_goPlanePrefab; // Prefab du plan
     public Material m_mGroundColor; // Materiel de couleur du terrain
     public GameObject m_stade; // Prefab du stade
-    private bool isAlreadyGroundExist = false;
+    public Text debug;
+    private bool m_isAlreadyGroundExist = false;
+    private const float CUBE_X = 1.5f;
+    private const float CUBE_Y = 0.01f;
+    private const float CUBE_Z = 0.8f;
+    private const float RANDOM_SIDE_VALUE = 0.2f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,12 +40,12 @@ public class groundInitializer : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetMouseButtonDown(0) && !isAlreadyGroundExist)
+        if (Input.GetMouseButtonDown(0) && !m_isAlreadyGroundExist)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (m_rmRaycastManager.Raycast(ray, m_lARRayCastHit, UnityEngine.XR.ARSubsystems.TrackableType.PlaneEstimated))
             {
-                CreateGround();
+                CreateRandomGround();
                 HidePlaneManager();
             }
         }
@@ -58,10 +64,31 @@ public class groundInitializer : MonoBehaviour
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
         GameObject gameGround = Instantiate(m_stade);
-        //GameObject gameGround = GameObject.CreatePrimitive(PrimitiveType.Cube);
         gameGround.transform.position = m_lARRayCastHit[0].pose.position;
         gameGround.transform.localScale = new Vector3(6f,6f,6f);
-        //gameGround.GetComponent<MeshRenderer>().material = m_mGroundColor;
-        isAlreadyGroundExist = true;
+        m_isAlreadyGroundExist = true;
+    }
+    void CreateRandomGround()
+    {
+    float x;
+    float y;
+    float z;
+
+    GameObject randomGameGround = new GameObject();
+        randomGameGround.transform.position = m_lARRayCastHit[0].pose.position;
+        randomGameGround.AddComponent<LineRenderer>();
+        randomGameGround.GetComponent<LineRenderer>().positionCount = 4;
+        randomGameGround.GetComponent<LineRenderer>().loop = true;
+        randomGameGround.GetComponent<LineRenderer>().alignment = LineAlignment.TransformZ;
+        x = m_lARRayCastHit[0].pose.position.x + Random.Range(-RANDOM_SIDE_VALUE, RANDOM_SIDE_VALUE);
+        y = CUBE_Y;
+        z = m_lARRayCastHit[0].pose.position.z + Random.Range(-RANDOM_SIDE_VALUE, RANDOM_SIDE_VALUE);
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(0, new Vector3(x + CUBE_X, y, z + CUBE_Z));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(1, new Vector3(x + CUBE_X, y, z - CUBE_Z));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(2, new Vector3(x - CUBE_X, y, z - CUBE_Z));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(3, new Vector3(x - CUBE_X, y, z + CUBE_Z));
+        randomGameGround.GetComponent<LineRenderer>().material = m_mGroundColor;
+        debug.text = randomGameGround.GetComponent<LineRenderer>().GetPosition(0).x.ToString(); 
+        // TODO tester pourquoi le setposition ne marche pas : tester coordonnées points
     }
 }
