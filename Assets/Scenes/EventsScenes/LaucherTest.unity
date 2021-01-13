@@ -414,6 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_eventsNbMax: 3
   m_launcherPanel: {fileID: 327053408}
+  m_reloadTime: 3
 --- !u!4 &578999156
 Transform:
   m_ObjectHideFlags: 0
