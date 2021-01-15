@@ -69,9 +69,9 @@ public class RoomManager : Singleton<RoomManager>
         DatabaseReference room = database.Child("rooms").Child(m_sID);
 
         // room.Child("players").ValueChanged += PlayersCountChange;
-        room.Child("teams").Child("blue").ChildAdded += AddBluePlayer;
-        room.Child("teams").Child("red").ChildAdded += AddRedPlayer;
-        room.Child("teams").Child("spectator").ChildAdded += AddSpecPlayer;
+        room.Child("teams").Child("blue").Child("players").ChildAdded += AddBluePlayer;
+        room.Child("teams").Child("red").Child("players").ChildAdded += AddRedPlayer;
+        room.Child("teams").Child("spectator").Child("players").ChildAdded += AddSpecPlayer;
 
         m_bCreator = true;
         // finir l'animation d'attente et lancer une notification de réussite
@@ -80,33 +80,43 @@ public class RoomManager : Singleton<RoomManager>
         yield break;
     }
 
-    public IEnumerator AddPlayerToTeamInDatabase(Team.TeamColor teamColor)
+    public IEnumerator AddPlayerToTeamInDatabase(Team.TeamColor teamColor, Action action = null)
     {
-        //DatabaseReference database = FireBaseManager.Instance.Database;
-        ////DatabaseReference room = database.Child("rooms").Child(m_sID);
-        //string team;
+        DatabaseReference database = FireBaseManager.Instance.Database;
+        //DatabaseReference room = database.Child("rooms").Child(m_sID);
+        string team;
 
-        //switch (teamColor)
-        //{
-        //    case Team.TeamColor.BLUE:
-        //        team = "blue";
-        //        break;
-        //    case Team.TeamColor.RED:
-        //        team = "red";
-        //        break;
-        //    default:
-        //        team = "spectator";
-        //        break;
-        //}
+        switch (teamColor)
+        {
+            case Team.TeamColor.BLUE:
+                team = "blue";
+                break;
+            case Team.TeamColor.RED:
+                team = "red";
+                break;
+            default:
+                team = "spectator";
+                break;
+        }
 
-        //Task playerAdding = database.Child("rooms").Child(m_sID).Child("teams").Child(team).Child(UserManager.Instance.getUser().UserId).SetValueAsync(UserManager.Instance.getUser().DisplayName).ContinueWith(result => {
-        //    if (result.IsFaulted || result.IsCanceled)
-        //    {
-        //        Debug.Log("Erreur dans la création de la salle");
-        //        return;
-        //    }
-        //});
-        //while (!playerAdding.IsCompleted) yield return null;
+        Task playerAdding = database.Child("rooms").Child(m_sID).Child("teams").Child(team).Child("players").Child(UserManager.Instance.getUser().UserId).SetValueAsync(UserManager.Instance.getUser().DisplayName).ContinueWith(result =>
+        {
+            if (result.IsFaulted || result.IsCanceled)
+            {
+                Debug.Log("Erreur dans la création de la salle");
+                return;
+            }
+        });
+        while (!playerAdding.IsCompleted) yield return null;
+
+        // Ajouter les callbacks pour la gestions
+
+        DatabaseReference room = database.Child("rooms").Child(m_sID);
+
+        room.Child("teams").Child("blue").Child("players").ChildAdded += AddBluePlayer;
+        room.Child("teams").Child("red").Child("players").ChildAdded += AddRedPlayer;
+        room.Child("teams").Child("spectator").Child("players").ChildAdded += AddSpecPlayer;
+        action();
         yield break;
     }
 
@@ -156,14 +166,6 @@ public class RoomManager : Singleton<RoomManager>
     {
         yield break;
     }
-
-    //private string ToJsonPlayer()
-    //{
-    //    string json = "{";
-    //    // Player informations
-    //    json += $"\"{UserManager.Instance.getUser().DisplayName}\": \"{UserManager.Instance.getUser().UserId}\"";
-    //    return json + '}';
-    //}
 
     private string ToJson() {
         string json = "{";
@@ -225,7 +227,7 @@ public class Team {
     public string ToJson() {
         string json = "{";
         m_lstpList.ForEach(player => json += player.ToJson() + ',');
-        return json + "\"score\":0}";
+        return json + "\"score\":0 }";
     }
 }
 
