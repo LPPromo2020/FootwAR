@@ -26,11 +26,10 @@ public class groundInitializer : MonoBehaviour
     private const float CUBE_X = 1.5f;
     private const float CUBE_Y = 0.01f;
     private const float CUBE_Z = 0.8f;
-    private const float RANDOM_SIDE_VALUE = 0.2f;
+    private const float RANDOM_SIDE_VALUE = 1f;
     public ARTrackedImageManager m_timImageManager; // Le Tracked Image Manager
     private List<Vector3> m_lImagePositionList;
-    private int m_paperCounter = 0;
-    private int count = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -87,47 +86,35 @@ public class groundInitializer : MonoBehaviour
         randomGameGround.AddComponent<LineRenderer>();
         randomGameGround.GetComponent<LineRenderer>().positionCount = 4;
         randomGameGround.GetComponent<LineRenderer>().loop = true;
-        randomGameGround.GetComponent<LineRenderer>().alignment = LineAlignment.TransformZ;
+        randomGameGround.GetComponent<LineRenderer>().useWorldSpace = true;
         x = m_lARRayCastHit[0].pose.position.x + Random.Range(-RANDOM_SIDE_VALUE, RANDOM_SIDE_VALUE);
-        y = CUBE_Y;
+        y = m_lARRayCastHit[0].pose.position.y;
         z = m_lARRayCastHit[0].pose.position.z + Random.Range(-RANDOM_SIDE_VALUE, RANDOM_SIDE_VALUE);
         randomGameGround.GetComponent<LineRenderer>().SetPosition(0, new Vector3(x + CUBE_X, y, z + CUBE_Z));
         randomGameGround.GetComponent<LineRenderer>().SetPosition(1, new Vector3(x + CUBE_X, y, z - CUBE_Z));
         randomGameGround.GetComponent<LineRenderer>().SetPosition(2, new Vector3(x - CUBE_X, y, z - CUBE_Z));
         randomGameGround.GetComponent<LineRenderer>().SetPosition(3, new Vector3(x - CUBE_X, y, z + CUBE_Z));
-        randomGameGround.GetComponent<LineRenderer>().material = m_mGroundColor;
-        testDebug.text = randomGameGround.GetComponent<LineRenderer>().GetPosition(0).x.ToString(); 
-        // TODO tester pourquoi le setposition ne marche pas : tester coordonnées points
+        // https://docs.unity3d.com/ScriptReference/Mesh.html
     }
     /* Fonction faisant la moyenne des 4 point selectionnés via le AR*/
     void Egalise()
     {
-        string debug = "test ";
         float total_y = 0.0f;
-        testDebug.text = debug;
+        int m_paperCounter = 0;
         foreach (var trackedImage in m_timImageManager.trackables)
         {
             total_y += trackedImage.transform.position.y;
             Vector3 vect = trackedImage.transform.position;
            m_lImagePositionList.Add(vect);
-            debug += vect.ToString() + "--";
-            testDebug.text = debug;
         }
-        testDebug.text = debug;
-         debug += $"total y : {total_y}" + "---" + m_timImageManager.trackables.count;
-         testDebug.text = debug;
-
-        
-
-        
         float average_y = (total_y / m_timImageManager.trackables.count);
-        foreach (var position in m_lImagePositionList)
+
+        for (int i = 0; i < m_lImagePositionList.Count; i++)
         {
-            m_lImagePositionList[m_paperCounter] = new Vector3(position.x, average_y, position.z);
+            m_lImagePositionList[m_paperCounter] = new Vector3(m_lImagePositionList[m_paperCounter].x, average_y, m_lImagePositionList[m_paperCounter].z);
+            testDebug.text += m_paperCounter+ "   ";
             m_paperCounter++;
         }
-        debug += $"Vecteur1: {m_lImagePositionList[0].x} {m_lImagePositionList[0].y} {m_lImagePositionList[1].y} {m_lImagePositionList[2].y} {m_lImagePositionList[0].z} "; 
-        testDebug.text = debug;
         // https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@3.0/manual/anchor-manager.html
     }
 
@@ -163,27 +150,21 @@ public class groundInitializer : MonoBehaviour
             GameObject testARImage = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testARImage.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
             testARImage.transform.position = newImage.transform.position;
-            count++;
-            testDebug.text += "ajout d'un cube " + count + "-" + newImage.transform.position.ToString();
-            if (count == 4)
-            {
-                testDebug.text += "test";
-                //Egalise();
-            }
-            newImage.
-            StartCoroutine(DelayAffiche(newImage, newImage.transform.position.ToString()));
+            testDebug.text += "ajout d'un cube " + "-" + newImage.transform.position.ToString() + m_timImageManager.trackables.count + "--";
         }
 
         foreach (var updatedImage in eventArgs.updated)
         {
-            // Handle updated event
 
-            //StartCoroutine(DelayAffiche(updatedImage, updatedImage.transform.position.ToString()));
+            if (m_timImageManager.trackables.count == 4)
+            {
+                Egalise();
+            }
         }
 
         foreach (var removedImage in eventArgs.removed)
         {
-            testDebug.text = "LOST";
+            testDebug.text = "L'image" + removedImage.referenceImage.name + "a été perdue";
             // Handle removed event
         }
     }

@@ -499,10 +499,9 @@ MonoBehaviour:
   m_goPlanePrefab: {fileID: 328700553808959333, guid: 9ee4080ddc0ce1644bc9d83a208ead1b,
     type: 3}
   m_mGroundColor: {fileID: 2100000, guid: 83389573daa8370459655508fc9227d4, type: 2}
-  m_timImageManager: {fileID: 107093228}
+  m_stade: {fileID: 0}
   testDebug: {fileID: 12368780}
-  m_stade: {fileID: 919132149155446097, guid: ae835ee1ab43ff44f815b6078af1e147, type: 3}
-  debug: {fileID: 12368780}
+  m_timImageManager: {fileID: 107093228}
 --- !u!114 &107093228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,7 +821,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1365633176
 GameObject:
@@ -955,6 +954,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1237440929483769666, guid: 8eaba231700e0f74ba234b8f362b0439,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2352731455134179623, guid: 8eaba231700e0f74ba234b8f362b0439,
         type: 3}
       propertyPath: m_LocalPosition.x
