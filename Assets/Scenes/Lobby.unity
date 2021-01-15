@@ -1941,7 +1941,7 @@ GameObject:
   - component: {fileID: 743671252}
   - component: {fileID: 743671253}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Spectators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2109,7 +2109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.035515495, b: 0, a: 0.392}
+  m_Color: {r: 0.9333334, g: 0.46274513, b: 0.15294118, a: 0.392}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2303,7 +2303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.15604067, b: 1, a: 0.392}
+  m_Color: {r: 0.34509805, g: 0.7686275, b: 0.9215687, a: 0.392}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2455,11 +2455,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInList: {fileID: 4109726268800613234, guid: adf1642575950374a9bc1b671054851f,
+  playerInList: {fileID: 8858232997160829328, guid: 2d7693754de04584fb31b32c9d0600f4,
     type: 3}
-  redTeam: {fileID: 0}
-  blueTeam: {fileID: 0}
-  specTeam: {fileID: 0}
+  redTeam: {fileID: 564042828}
+  blueTeam: {fileID: 601835973}
+  specTeam: {fileID: 582659745}
 --- !u!4 &1120237376
 Transform:
   m_ObjectHideFlags: 0
@@ -2586,7 +2586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c7903cbaeb9155b499ca1d4326dfa134, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ec85d70327a2d27478d0d605a515fe08, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2978,7 +2978,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 908a238a6630ef9478727fca27bcc859, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c14e552acb2bc6643aedbaaade017b6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3301,7 +3301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a74cb04c48d98d5468fae0d50762662a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c5fbabed386e9fe468ecfabfb83162c1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
