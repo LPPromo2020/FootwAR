@@ -149,6 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c320bddf8bad394824798339393e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volume: 0.5
+  m_audioClipsList: []
   m_asMainMenu: {fileID: 2177022526343912422}
-  m_audioClipMusicToPlay: {fileID: 8300000, guid: 67c79b3cd12f97843b3249cd7c6206f5,
+  m_audioClipMusicToPlay: {fileID: 8300000, guid: bf0ca4b4e0983da4a92a6b440b7ac4d1,
+    type: 3}
+  m_audioClipMusicInGame: {fileID: 8300000, guid: 6ac092144037b5946ad6dce3e41818a9,
     type: 3}
