@@ -5,20 +5,29 @@
  * A mettre dans le ARSessionOrigin :
  * - "goPlanePrefab" correspond au prefab "groundVisualizer", 
  * - "mGroundColor" correspond au material utilisé.
+ * - "mStadePrefab" correspond au prefab du stade utilisé (uniquement pour la fonction CreateGround).
+ * - "tTestDebug" utilisé pour le débug et les messages d'erreur en AR.
 */
 
-
+using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using System.Collections;
 
 public class groundInitializer : MonoBehaviour
 {
-    public ARRaycastManager m_rmRaycastManager; // Le Raycast Manager
-    public ARPlaneManager m_pmPlaneManager; // Le Plane Manager
+    private ARRaycastManager m_rmRaycastManager; // Le Raycast Manager
+    private ARPlaneManager m_pmPlaneManager; // Le Plane Manager
     public List<ARRaycastHit> m_lARRayCastHit; // Liste de point trouvés par le raycastmanager
     public GameObject m_goPlanePrefab; // Prefab du plan
     public Material m_mGroundColor; // Materiel de couleur du terrain
+    public GameObject m_mStadePrefab; // Prefab du stade
+    public Text m_tTestDebug; // Texte de debug.
+    private bool m_isAlreadyGroundExist = false; // Si un terrain a déjà été posé. A faux par défaut.
+    public ARTrackedImageManager m_timImageManager; // Le Tracked Image Manager
+    private List<Vector3> m_lImagePositionList; // Liste des vector3 de position, utilisée pour créer le terrain AR.
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +35,14 @@ public class groundInitializer : MonoBehaviour
         m_rmRaycastManager = FindObjectOfType<ARRaycastManager>();
         m_pmPlaneManager = FindObjectOfType<ARPlaneManager>();
         m_lARRayCastHit = new List<ARRaycastHit>();
+        m_lImagePositionList = new List<Vector3>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        
+        if (Input.GetMouseButtonDown(0) && !m_isAlreadyGroundExist)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (m_rmRaycastManager.Raycast(ray, m_lARRayCastHit, UnityEngine.XR.ARSubsystems.TrackableType.PlaneEstimated))
@@ -54,10 +65,106 @@ public class groundInitializer : MonoBehaviour
 
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
-        GameObject gameGround = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject gameGround = Instantiate(m_mStadePrefab);
         gameGround.transform.position = m_lARRayCastHit[0].pose.position;
-        gameGround.transform.localScale = new Vector3(3f + (Random.value * 2), 0.01f, 5f + (Random.value * 2));
-        gameGround.GetComponent<MeshRenderer>().material = m_mGroundColor;
-
+        gameGround.transform.localScale = new Vector3(6f,6f,6f);
+        m_isAlreadyGroundExist = true;
     }
+    /*Fonction permettant de créer un sol avec des un terrain random
+    * => Actuellement non fonctionnel. En cours.
+    */
+    void CreateRandomGround()
+    {
+        float x;
+        float y;
+        float z;
+
+        GameObject randomGameGround = new GameObject();
+        randomGameGround.transform.position = m_lARRayCastHit[0].pose.position;
+        randomGameGround.AddComponent<LineRenderer>();
+        randomGameGround.GetComponent<LineRenderer>().positionCount = 4;
+        randomGameGround.GetComponent<LineRenderer>().loop = true;
+        randomGameGround.GetComponent<LineRenderer>().useWorldSpace = true;
+        x = m_lARRayCastHit[0].pose.position.x + Random.Range(-1.0f, 1.0f);
+        y = m_lARRayCastHit[0].pose.position.y;
+        z = m_lARRayCastHit[0].pose.position.z + Random.Range(-1.0f, 1.0f);
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(0, new Vector3(x + 1.5f, y, z + 0.8f));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(1, new Vector3(x + 1.5f, y, z - 0.8f));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(2, new Vector3(x - 1.5f, y, z - 0.8f));
+        randomGameGround.GetComponent<LineRenderer>().SetPosition(3, new Vector3(x - 1.5f, y, z + 0.8f));
+        // https://docs.unity3d.com/ScriptReference/Mesh.html
+    }
+    /* Fonction faisant la moyenne des 4 point selectionnés via le AR*/
+    void Egalise()
+    {
+        float total_y = 0.0f;
+        int m_paperCounter = 0;
+        foreach (var trackedImage in m_timImageManager.trackables)
+        {
+            total_y += trackedImage.transform.position.y;
+            Vector3 vect = trackedImage.transform.position;
+           m_lImagePositionList.Add(vect);
+        }
+        float average_y = (total_y / m_timImageManager.trackables.count);
+
+        for (int i = 0; i < m_lImagePositionList.Count; i++)
+        {
+            m_lImagePositionList[m_paperCounter] = new Vector3(m_lImagePositionList[m_paperCounter].x, average_y, m_lImagePositionList[m_paperCounter].z);
+            m_paperCounter++;
+        }
+        // https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@3.0/manual/anchor-manager.html
+    }
+    /*Fonction de test pour insérer un délais*/
+    IEnumerator DelayAffiche(ARTrackedImage newImage, string text)
+    {
+        yield return new WaitForEndOfFrame();
+        m_tTestDebug.text = $"Image: {newImage.referenceImage.name} is at " + $"{text}";
+    }
+
+    /*Fonction de test permettant de lister les images*/
+    void ListAllImages()
+    {
+        string debug;
+        debug =
+            $"There are {m_timImageManager.trackables.count} images being tracked.";
+
+        foreach (var trackedImage in m_timImageManager.trackables)
+        {
+            debug += $"Image: {trackedImage.referenceImage.name} is at " +
+                      $"{trackedImage.transform.position}";
+        }
+        m_tTestDebug.text = debug;
+    }
+
+    void OnEnable() => m_timImageManager.trackedImagesChanged += OnChanged;
+
+    void OnDisable() => m_timImageManager.trackedImagesChanged -= OnChanged;
+
+    /*Fonction OnChanged utilisée lors du scan des images définissant les points du terrain*/
+    void OnChanged(ARTrackedImagesChangedEventArgs eventArgs)
+    {
+        /*Appelé à chaque image ajoutée*/
+        foreach (var newImage in eventArgs.added)
+        {
+            GameObject testARImage = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testARImage.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            testARImage.transform.position = newImage.transform.position;
+            m_tTestDebug.text += "ajout d'un cube " + "-" + newImage.transform.position.ToString() + m_timImageManager.trackables.count + "--";
+        }
+        /*Appelé à chaque image actualisé*/
+        foreach (var updatedImage in eventArgs.updated)
+        {
+
+            if (m_timImageManager.trackables.count == 4)
+            {
+                Egalise();
+            }
+        }
+        /*Appelé à chaque image perdu*/
+        foreach (var removedImage in eventArgs.removed)
+        {
+            m_tTestDebug.text = "L'image" + removedImage.referenceImage.name + "a été perdue";
+        }
+    }
+
 }

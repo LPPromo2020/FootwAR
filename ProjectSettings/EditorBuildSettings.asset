@@ -15,10 +15,14 @@ EditorBuildSettings:
     path: Assets/Scenes/TestScenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/TestScenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/TestScenes/yannisTest.unity
+=======
+    path: Assets/Scenes/groundInitializerScene.unity
+>>>>>>> ground
     guid: a438acfee48aac14a9baff57aec819af
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
