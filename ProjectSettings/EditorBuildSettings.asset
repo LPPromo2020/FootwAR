@@ -5,40 +5,43 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LOADER.unity
     guid: 4a98d701d8e4b914daed44531ec67eb2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lobby.unity
     guid: b3a5156d6e397f34486bce6c40f17e2b
   - enabled: 1
+    path: Assets/Scenes/InGameScene.unity
+    guid: 1650f0bc4b50eaa488cebbbdc92c8b30
+  - enabled: 0
     path: Assets/Ball/TestScenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Ball/TestScenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Ball/TestScenes/yannisTest.unity
     guid: a438acfee48aac14a9baff57aec819af
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 3032e9976f1c43240bd4938288327063
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Connexion.unity
     guid: 8bf9ce3c74bb8744fa6dcc9c31ea0207
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CreateRoom.unity
     guid: 1126bdcf7cf5beb4e923d4af37b5f70f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FirstScene.unity
     guid: e9f421cbd312e454b89d75d0a52862b3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Inscription.unity
     guid: 0bd4c2cc4cb858743b65df14ebcceca9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scores.unity
     guid: 2ae09f4722974a84a8323eacfb096a27
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SearchRoom.unity
     guid: 1a0393532ccfb48458059cffb6469689
   m_configObjects: {}

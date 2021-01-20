@@ -190,6 +190,7 @@ MonoBehaviour:
     type: 3}
   m_tTestDebug: {fileID: 0}
   m_timImageManager: {fileID: 27398507}
+  m_fArenaScale: 0.06
 --- !u!114 &27398510
 MonoBehaviour:
   m_ObjectHideFlags: 0

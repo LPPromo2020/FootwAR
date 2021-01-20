@@ -27,6 +27,8 @@ public class groundInitializer : MonoBehaviour
     private bool m_isAlreadyGroundExist = false; // Si un terrain a déjà été posé. A faux par défaut.
     public ARTrackedImageManager m_timImageManager; // Le Tracked Image Manager
     private List<Vector3> m_lImagePositionList; // Liste des vector3 de position, utilisée pour créer le terrain AR.
+    [SerializeField]
+    private float m_fArenaScale = 0.06f;
 
 
     // Start is called before the first frame update
@@ -66,8 +68,8 @@ public class groundInitializer : MonoBehaviour
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
         GameObject gameGround = Instantiate(m_GOStadePrefab);
-        gameGround.transform.position = m_lARRayCastHit[0].pose.position;
-        gameGround.transform.localScale = new Vector3(6f,6f,6f);
+        gameGround.transform.position = m_lARRayCastHit[0].pose.position;        
+        gameGround.transform.localScale = new Vector3(m_fArenaScale, m_fArenaScale, m_fArenaScale);
         m_isAlreadyGroundExist = true;
     }
     /*Fonction permettant de créer un sol avec des un terrain random
