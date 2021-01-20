@@ -32,9 +32,7 @@ public class UserManager : Singleton<UserManager>
             Debug.LogWarning($"[{GetType()}] Une des information est vide");
             yield break;
         }
-        
-        Debug.Log($"[{GetType()}] email: {email}, password: {password}");
-        
+                
         AuthError error = AuthError.None;
         Task thread = FireBaseManager.Instance.Auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
@@ -73,8 +71,6 @@ public class UserManager : Singleton<UserManager>
 
             return false;
         }
-        
-        Debug.Log($"[{GetType()}] Connexion réussie");
         return true;
     }
     

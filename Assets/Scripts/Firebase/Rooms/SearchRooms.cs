@@ -50,6 +50,8 @@ public class SearchRooms : MonoBehaviour
 
     private void CreateRoom(DataSnapshot room)
     {
+        if ((bool)room.Child("isStart").Value) return;
+
         GameObject go = Instantiate(m_goPrefab, m_tParent);
         string n = (string) room.Child("roomName").Value, guid = room.Key;
 
@@ -82,6 +84,9 @@ public class SearchRooms : MonoBehaviour
         CreateRoom(args.Snapshot);
     }
 
+    /// <summary>
+    /// Struct for save Room data
+    /// </summary>
     private struct Room
     {
         private string m_sName;

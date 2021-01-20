@@ -434,6 +434,7 @@ GameObject:
   - component: {fileID: 481815936}
   - component: {fileID: 481815935}
   - component: {fileID: 481815939}
+  - component: {fileID: 481815940}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -536,6 +537,18 @@ MonoBehaviour:
   m_ifNameRoom: {fileID: 994700053}
   m_ifPassword: {fileID: 770169720}
   m_tPasswordUsed: {fileID: 726530523}
+--- !u!114 &481815940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481815934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cdeb786939bc4b2fadb7a4c290ad722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &707920923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,7 +1185,6 @@ GameObject:
   - component: {fileID: 1458829275}
   - component: {fileID: 1458829274}
   - component: {fileID: 1458829273}
-  - component: {fileID: 1458829276}
   m_Layer: 5
   m_Name: createButton
   m_TagString: Untagged
@@ -1245,17 +1257,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 481815939}
         m_MethodName: Create
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1458829276}
-        m_MethodName: OnClick
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1302,18 +1303,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458829271}
   m_CullTransparentMesh: 0
---- !u!114 &1458829276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1458829271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1561287759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,7 +1315,6 @@ GameObject:
   - component: {fileID: 1561287763}
   - component: {fileID: 1561287762}
   - component: {fileID: 1561287761}
-  - component: {fileID: 1561287764}
   m_Layer: 5
   m_Name: backButton
   m_TagString: Untagged
@@ -1397,8 +1385,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1561287764}
-        m_MethodName: OnClick
+      - m_Target: {fileID: 481815940}
+        m_MethodName: Load
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1445,18 +1433,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1561287759}
   m_CullTransparentMesh: 0
---- !u!114 &1561287764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561287759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6bdd1a0339b49c40b33aad7a4c3bf41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1615088875
 GameObject:
   m_ObjectHideFlags: 0

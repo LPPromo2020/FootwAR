@@ -21,22 +21,56 @@ public class Team
     public Team(TeamColor color) { m_tcColor = color; }
 
     public void AddPlayer(PlayerOnTeam p) => m_lstpList.Add(p);
-    public List<PlayerOnTeam> AllPlayer() => m_lstpList;
+    public List<PlayerOnTeam> AllPlayer => m_lstpList;
     public TeamColor Color() => m_tcColor;
 
+    // Save score information
+    private int m_iScore = 0;
+
+    /// <summary>
+    /// Return true if player with the GUID is find
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
     public bool HaveThisPlayer(string guid) {
-        bool ret = false;
-        m_lstpList.ForEach(p => { if (p.Guid == guid) ret = true; });
-        return ret;
+        // bool ret = false;
+        // m_lstpList.ForEach(p => { if (p.Guid == guid) ret = true; });
+        // return ret;
+        return GetPlayer(guid) != null;
     }
 
+    /// <summary>
+    /// Remove player with GUID information
+    /// </summary>
+    /// <param name="guid"></param>
+    public void RemovePlayer(string guid) {
+        RemovePlayer(GetPlayer(guid));
+    }
+
+    /// <summary>
+    /// Remove player with reference
+    /// </summary>
+    /// <param name="p"></param>
+    public void RemovePlayer(PlayerOnTeam p) {
+        m_lstpList.Remove(p);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
     public PlayerOnTeam GetPlayer(string guid) {
         return m_lstpList.Find(p => p.Guid == guid);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public string ToJson() {
         string json = "{";
         m_lstpList.ForEach(player => json += player.ToJson() + ',');
-        return json + "\"score\":0 }";
+        return json + "\"score\": " + m_iScore + " }";
     }
 }

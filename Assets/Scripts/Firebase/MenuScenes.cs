@@ -10,7 +10,8 @@ public class MenuScenes : MonoBehaviour
 
     void Start()
     {
-        RoomManager.Instance.AddCallBack(UpdateUI);
+        RoomManager.Instance.SetCallBackPlayerAdd(UpdateUI);
+        RoomManager.Instance.SetCallBackPlayerQuit(UpdateUI);
         AddPlayerSpec();
     }
 
@@ -21,27 +22,27 @@ public class MenuScenes : MonoBehaviour
 
     public void AddPlayerBlue()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.BLUE, UpdateUI));
+        StartCoroutine(RoomManager.Instance.ChangeTeam("blue"));
     }
     
     public void AddPlayerRed()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.RED, UpdateUI));
+        StartCoroutine(RoomManager.Instance.ChangeTeam("red"));
     }
     
     public void AddPlayerSpec()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.SPECTATOR, UpdateUI));
+        StartCoroutine(RoomManager.Instance.ChangeTeam("spectator"));
     }
 
-    public void UpdateUI()
+    private void UpdateUI()
     {
         DestroyChildTeam(redTeam);
         DestroyChildTeam(blueTeam);
         DestroyChildTeam(specTeam);
 
         Team[] teams = RoomManager.Instance.getTeams();
-        
+
         InstancePlayerInList(redTeam, teams[0]);
         InstancePlayerInList(blueTeam, teams[1]);
         InstancePlayerInList(specTeam, teams[2]);
@@ -49,18 +50,19 @@ public class MenuScenes : MonoBehaviour
 
     private void DestroyChildTeam(Transform team) {
         for (int i = 0; i < team.childCount; i++)
-            Destroy(team.GetChild(i).gameObject);
+            DestroyImmediate(team.GetChild(i).gameObject);
     }
 
     private void InstancePlayerInList(Transform parent, Team team) {
         Transform instance;
-        foreach (PlayerOnTeam player in team.AllPlayer()) {
+        foreach (PlayerOnTeam player in team.AllPlayer) {
             instance = Instantiate(playerInList, parent).transform;
             instance.GetChild(0).GetComponent<Text>().text = player.Guid;
         }
     }
 
     ~MenuScenes() {
-        RoomManager.Instance.RemoveCallBack();
+        RoomManager.Instance.RemoveCallBackPlayerAdd();
+        RoomManager.Instance.RemoveCallBackPlayerQuit();
     }
 }

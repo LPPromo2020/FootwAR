@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateRoom : MonoBehaviour
@@ -10,7 +8,7 @@ public class CreateRoom : MonoBehaviour
 
     [SerializeField] private Toggle m_tPasswordUsed;
 
-    public void Create()
+    public void Create(string loadAfter)
     {
         if (m_ifNameRoom.text == "")
         {
@@ -18,6 +16,10 @@ public class CreateRoom : MonoBehaviour
             return;
         }
 
-        StartCoroutine(RoomManager.Instance.CreateRoom(m_ifNameRoom.text, m_ifPassword.text, 4, 260));
+        StartCoroutine(RoomManager.Instance.CreateRoom(m_ifNameRoom.text, m_ifPassword.text, 4, 260, () => Load(loadAfter)));
+    }
+
+    private void Load(string n) {
+        SceneLoader.LoadScene(n);
     }
 }

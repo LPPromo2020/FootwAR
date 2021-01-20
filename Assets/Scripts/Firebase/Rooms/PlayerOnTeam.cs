@@ -5,8 +5,9 @@
 /// </summary>
 public class PlayerOnTeam
 {
+    // GUID
     public string Guid;
-
+    // 
     private Transform m_tranform;
 
     public PlayerOnTeam(string guid, Transform t = null) {
