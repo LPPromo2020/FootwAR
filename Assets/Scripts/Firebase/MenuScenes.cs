@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuScenes : MonoBehaviour
@@ -12,6 +10,7 @@ public class MenuScenes : MonoBehaviour
 
     void Start()
     {
+        RoomManager.Instance.AddCallBack(UpdateUI);
         AddPlayerSpec();
     }
 
@@ -22,55 +21,46 @@ public class MenuScenes : MonoBehaviour
 
     public void AddPlayerBlue()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(Team.TeamColor.BLUE, UpdateUI));
+        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.BLUE, UpdateUI));
     }
     
     public void AddPlayerRed()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(Team.TeamColor.RED, UpdateUI));
+        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.RED, UpdateUI));
     }
     
     public void AddPlayerSpec()
     {
-        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(Team.TeamColor.SPECTATOR, UpdateUI));
+        StartCoroutine(RoomManager.Instance.AddPlayerToTeamInDatabase(TeamColor.SPECTATOR, UpdateUI));
     }
 
     public void UpdateUI()
     {
-        for (int i = 0; i < redTeam.childCount; i++)
-        {
-            Destroy(redTeam.GetChild(i).gameObject);
-        }
-
-        for (int i = 0; i < blueTeam.childCount; i++)
-        {
-            Destroy(blueTeam.GetChild(i).gameObject);
-        }
-
-        for (int i = 0; i < specTeam.childCount; i++)
-        {
-            Destroy(specTeam.GetChild(i).gameObject);
-        }
+        DestroyChildTeam(redTeam);
+        DestroyChildTeam(blueTeam);
+        DestroyChildTeam(specTeam);
 
         Team[] teams = RoomManager.Instance.getTeams();
-        GameObject instance;
+        
+        InstancePlayerInList(redTeam, teams[0]);
+        InstancePlayerInList(blueTeam, teams[1]);
+        InstancePlayerInList(specTeam, teams[2]);
+    }
 
-        foreach (Player player in teams[0].AllPlayer())
-        {
-            instance = Instantiate(playerInList, redTeam);
-            instance.transform.GetChild(0).GetComponent<Text>().text = player.Guid;
-        }
+    private void DestroyChildTeam(Transform team) {
+        for (int i = 0; i < team.childCount; i++)
+            Destroy(team.GetChild(i).gameObject);
+    }
 
-        foreach (Player player in teams[1].AllPlayer())
-        {
-            instance = Instantiate(playerInList, blueTeam);
-            instance.transform.GetChild(0).GetComponent<Text>().text = player.Guid;
+    private void InstancePlayerInList(Transform parent, Team team) {
+        Transform instance;
+        foreach (PlayerOnTeam player in team.AllPlayer()) {
+            instance = Instantiate(playerInList, parent).transform;
+            instance.GetChild(0).GetComponent<Text>().text = player.Guid;
         }
+    }
 
-        foreach (Player player in teams[2].AllPlayer())
-        {
-            instance = Instantiate(playerInList, specTeam);
-            instance.transform.GetChild(0).GetComponent<Text>().text = player.Guid;
-        }
+    ~MenuScenes() {
+        RoomManager.Instance.RemoveCallBack();
     }
 }

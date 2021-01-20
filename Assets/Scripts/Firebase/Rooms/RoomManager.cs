@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase.Database;
 using UnityEngine;
+
+using AuthError = Firebase.Auth.AuthError;
 
 public class RoomManager : Singleton<RoomManager>
 {
@@ -16,11 +17,20 @@ public class RoomManager : Singleton<RoomManager>
     private float m_fStartTime;
 
     // Ajouter les équipes
-    private Team m_tBlue = new Team(Team.TeamColor.BLUE);
-    private Team m_tRed = new Team(Team.TeamColor.RED);
-    private Team m_tSpectator = new Team(Team.TeamColor.SPECTATOR);
+    private Team m_tBlue = new Team(TeamColor.BLUE);
+    private Team m_tRed = new Team(TeamColor.RED);
+    private Team m_tSpectator = new Team(TeamColor.SPECTATOR);
 
-    // TODO (Romumu): Ajouter la liste de bonus
+    // Permet de stocker un callback
+    private Action m_aCallBackPlayerJoin;
+    /// <summary>
+    /// Fonction pour ajouter un callback pour quand un joueur est ajouté
+    /// </summary>
+    public void AddCallBack(Action c) => m_aCallBackPlayerJoin = c;
+    /// <summary>
+    /// Supprime le callback pour ne pas lancer de function inutile
+    /// </summary>
+    public void RemoveCallBack() => m_aCallBackPlayerJoin = null;
 
     public IEnumerator CreateRoom(string name, string password, int maxPlayer, float startTime)
     {
@@ -80,7 +90,7 @@ public class RoomManager : Singleton<RoomManager>
         yield break;
     }
 
-    public IEnumerator AddPlayerToTeamInDatabase(Team.TeamColor teamColor, Action action = null)
+    public IEnumerator AddPlayerToTeamInDatabase(TeamColor teamColor, Action action = null)
     {
         DatabaseReference database = FireBaseManager.Instance.Database;
         //DatabaseReference room = database.Child("rooms").Child(m_sID);
@@ -88,10 +98,10 @@ public class RoomManager : Singleton<RoomManager>
 
         switch (teamColor)
         {
-            case Team.TeamColor.BLUE:
+            case TeamColor.BLUE:
                 team = "blue";
                 break;
-            case Team.TeamColor.RED:
+            case TeamColor.RED:
                 team = "red";
                 break;
             default:
@@ -111,11 +121,14 @@ public class RoomManager : Singleton<RoomManager>
 
         // Ajouter les callbacks pour la gestions
 
-        DatabaseReference room = database.Child("rooms").Child(m_sID);
+        DatabaseReference room = database.Child("rooms").Child(m_sID).Child("teams");
 
-        room.Child("teams").Child("blue").Child("players").ChildAdded += AddBluePlayer;
-        room.Child("teams").Child("red").Child("players").ChildAdded += AddRedPlayer;
-        room.Child("teams").Child("spectator").Child("players").ChildAdded += AddSpecPlayer;
+        room.Child("blue").Child("players").ChildAdded += AddBluePlayer;
+        room.Child("red").Child("players").ChildAdded += AddRedPlayer;
+        room.Child("spectator").Child("players").ChildAdded += AddSpecPlayer;
+
+        room.Child("moveplayer").ChildAdded += PlayerChangeTeam;
+
         action();
         yield break;
     }
@@ -155,16 +168,22 @@ public class RoomManager : Singleton<RoomManager>
 
         DataSnapshot data = args.Snapshot;        
         if (!t.HaveThisPlayer(data.Key)) {
-            t.AddPlayer(new Player(data.Key, new GameObject().transform));
+            t.AddPlayer(new PlayerOnTeam(data.Key));
         }
 
-        Debug.Log($"Add Player: {data.Key} on team {t.Color()}");
-        // Ajouter une personne dans le visuel
+        m_aCallBackPlayerJoin();
     }
 
     public IEnumerator ConnectToRoom()
     {
         yield break;
+    }
+
+    public IEnumerator CloseAndRemoveRoom() {
+        Task rm = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).RemoveValueAsync();
+        while (!rm.IsCompleted) yield return null;
+
+        NotificationsManager.Instance.AddNotification("Salle Manager", "Suppression de la salle créé");
     }
 
     private string ToJson() {
@@ -196,51 +215,72 @@ public class RoomManager : Singleton<RoomManager>
         return false;
     }
 
+    public void PlayerChangeTeam(object sender, ChildChangedEventArgs args) {
+        if (args.DatabaseError != null) {
+            Debug.LogError("PlayerChangeTeam: " + args.DatabaseError.Message);
+            return;
+        }
+
+        DataSnapshot player = args.Snapshot;
+
+        string currentTeam = player.Child("current").Value.ToString();
+        string newTeam = player.Child("new").Value.ToString();
+
+        if (newTeam == "" || currentTeam == "") {
+            NotificationsManager.Instance.AddNotification("Erreur", "Impossible de changer d'équipe");
+            return;
+        }
+
+        if (newTeam == "spectator") {
+            StartCoroutine(TeamToTeam(currentTeam, player, newTeam));
+        }
+        else if (newTeam == "red") {
+            if (m_tRed.AllPlayer().Count < m_iMaxPlayer / 2) {
+                StartCoroutine(TeamToTeam(currentTeam, player, newTeam));
+            }
+        }
+        else if (newTeam == "blue") {
+            if (m_tBlue.AllPlayer().Count < m_iMaxPlayer / 2) {
+                StartCoroutine(TeamToTeam(currentTeam, player, newTeam));
+            }
+        }
+        else
+            NotificationsManager.Instance.AddNotification("Erreur", "Impossible de changer d'équipe");
+    }
+
+    private IEnumerator TeamToTeam(string team, DataSnapshot player, string newTeam) {
+        DatabaseReference d = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).Child("teams");
+
+        Task t = d.Child(team).Child("players").Child(player.Key).RemoveValueAsync();
+        while (!t.IsCompleted) yield return null;
+
+        Task t2 = d.Child(newTeam).Child("players").Child(player.Key).SetRawJsonValueAsync("");
+        while (!t2.IsCompleted) yield return null;
+
+        if (t2.IsFaulted || t2.IsCanceled) {
+            AuthError error = FireBaseManager.GetAuthError(t2.Exception);
+
+            switch (error) {
+                case Firebase.Auth.AuthError.Failure:
+                    NotificationsManager.Instance.AddNotification("", "");
+                break;
+            }
+        } 
+    }
+
+    public void SetCallBackForAllPlayer() {
+
+    }
+
+    /// <summary>
+    /// Va supprimer la salle créé
+    /// </summary>
     ~RoomManager() {
-        // FireBaseManagerEssaie.Instance.Database.Child("rooms").Child(m_sID).RemoveValueAsync();
+        CloseAndRemoveRoom();
     }
 
     public Team[] getTeams()
     {
         return new Team[] { m_tRed, m_tBlue, m_tSpectator };
-    }
-}
-
-public class Team {
-    public enum TeamColor { BLUE, RED, SPECTATOR };
-
-    private List<Player> m_lstpList = new List<Player>();
-    private TeamColor m_tcColor;
-
-    public Team(TeamColor color) { m_tcColor = color; }
-
-    public void AddPlayer(Player p) => m_lstpList.Add(p);
-    public List<Player> AllPlayer() => m_lstpList;
-    public TeamColor Color() => m_tcColor;
-
-    public bool HaveThisPlayer(string guid) {
-        bool ret = false;
-        m_lstpList.ForEach(p => { if (p.Guid == guid) ret = true; });
-        return ret;
-    }
-
-    public string ToJson() {
-        string json = "{";
-        m_lstpList.ForEach(player => json += player.ToJson() + ',');
-        return json + "\"score\":0 }";
-    }
-}
-
-public struct Player {
-    public string Guid;
-    public Transform MyTransform;
-
-    public Player(string guid, Transform t) {
-        Guid = guid;
-        MyTransform = t;
-    }
-
-    public string ToJson() {
-        return $"\"{Guid}\":" + "{\"prs\":\"x¤y¤z¤x¤y¤z¤x¤y¤z\"}";
     }
 }
