@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
-
-/**
- * Romuald
- */
 
 /// <summary>
 ///
@@ -40,6 +34,9 @@ public class NotificationsManager : Singleton<NotificationsManager>
     private Queue<Notification> m_queueNotifications = new Queue<Notification>();
     private Coroutine m_cDisplayNotification;
 
+    /// <summary>
+    /// Permet l'initialisation de l'apparence de la notification
+    /// </summary>
     private void Start()
     {
         m_csCanvasScaler.referenceResolution = new Vector2(Screen.width, Screen.height);
@@ -51,19 +48,18 @@ public class NotificationsManager : Singleton<NotificationsManager>
 
         RectTransform title = m_tName.rectTransform;
         title.sizeDelta = new Vector2(width, height * (m_fTitleSpaceTake / 100));
-        Debug.Log($"Position: {title.localPosition}");
         title.localPosition = new Vector3(0, height / 2 - title.sizeDelta.y / 2, 0);
-        Debug.Log($"Position: {title.localPosition}");
 
         RectTransform message = m_tMessage.rectTransform;
         message.sizeDelta = new Vector2(width, height * ((100 - m_fTitleSpaceTake) / 100));
-        Debug.Log($"Position: {message.localPosition}");
         message.localPosition = new Vector3(0, -(height / 2 - message.sizeDelta.y / 2), 0);
-        Debug.Log($"Position: {message.localPosition}");
 
         m_bClose.onClick.AddListener(CloseNotification);
     }
 
+    /// <summary>
+    /// Ajoute une notification dans la liste
+    /// </summary>
     public void AddNotification(string n, string message, float duration = 1f)
     {
         m_queueNotifications.Enqueue(new Notification(n, message, duration));
@@ -72,6 +68,10 @@ public class NotificationsManager : Singleton<NotificationsManager>
         m_cDisplayNotification = StartCoroutine(DisplayNotification(m_queueNotifications.Dequeue(), 0));
     }
 
+
+    /// <summary>
+    /// Permet d'afficher la notification qui attend
+    /// </summary>
     private IEnumerator DisplayNotification(Notification notif, float time)
     {
         while ((time -= Time.deltaTime) > 0) yield return null;
@@ -85,6 +85,9 @@ public class NotificationsManager : Singleton<NotificationsManager>
         CloseNotification();
     }
 
+    /// <summary>
+    /// Ferme la notification et passe à la suivante
+    /// </summary>
     private void CloseNotification()
     {
         if (m_cDisplayNotification != null)
@@ -100,6 +103,9 @@ public class NotificationsManager : Singleton<NotificationsManager>
         });
     }
 
+    /// <summary>
+    /// Permet de sauvegarder les informations des notifications
+    /// </summary>
     private struct Notification
     {
         private string m_sName;
