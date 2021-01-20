@@ -22,11 +22,13 @@ public class groundInitializer : MonoBehaviour
     public List<ARRaycastHit> m_lARRayCastHit; // Liste de point trouvés par le raycastmanager
     public GameObject m_goPlanePrefab; // Prefab du plan
     public Material m_mGroundColor; // Materiel de couleur du terrain
-    public GameObject m_mStadePrefab; // Prefab du stade
+    public GameObject m_GOStadePrefab; // Prefab du stade
     public Text m_tTestDebug; // Texte de debug.
     private bool m_isAlreadyGroundExist = false; // Si un terrain a déjà été posé. A faux par défaut.
     public ARTrackedImageManager m_timImageManager; // Le Tracked Image Manager
     private List<Vector3> m_lImagePositionList; // Liste des vector3 de position, utilisée pour créer le terrain AR.
+    [SerializeField]
+    private float m_fArenaScale = 0.06f;
 
 
     // Start is called before the first frame update
@@ -47,7 +49,7 @@ public class groundInitializer : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (m_rmRaycastManager.Raycast(ray, m_lARRayCastHit, UnityEngine.XR.ARSubsystems.TrackableType.PlaneEstimated))
             {
-                CreateGround();
+                CreateRandomGround();
                 HidePlaneManager();
             }
         }
@@ -65,9 +67,9 @@ public class groundInitializer : MonoBehaviour
 
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
-        GameObject gameGround = Instantiate(m_mStadePrefab);
+        GameObject gameGround = Instantiate(m_GOStadePrefab);
         gameGround.transform.position = m_lARRayCastHit[0].pose.position;
-        gameGround.transform.localScale = new Vector3(6f,6f,6f);
+        gameGround.transform.localScale = new Vector3(m_fArenaScale, m_fArenaScale, m_fArenaScale);
         m_isAlreadyGroundExist = true;
     }
     /*Fonction permettant de créer un sol avec des un terrain random
@@ -75,6 +77,7 @@ public class groundInitializer : MonoBehaviour
     */
     void CreateRandomGround()
     {
+        /*
         float x;
         float y;
         float z;
@@ -92,7 +95,56 @@ public class groundInitializer : MonoBehaviour
         randomGameGround.GetComponent<LineRenderer>().SetPosition(1, new Vector3(x + 1.5f, y, z - 0.8f));
         randomGameGround.GetComponent<LineRenderer>().SetPosition(2, new Vector3(x - 1.5f, y, z - 0.8f));
         randomGameGround.GetComponent<LineRenderer>().SetPosition(3, new Vector3(x - 1.5f, y, z + 0.8f));
-        // https://docs.unity3d.com/ScriptReference/Mesh.html
+        */
+        Vector3[] vertices = new Vector3[4];
+       
+
+        float x = m_lARRayCastHit[0].pose.position.x;
+        float y = m_lARRayCastHit[0].pose.position.y;
+        float z = m_lARRayCastHit[0].pose.position.z;
+
+        vertices[0] = new Vector3(x - Random.Range(0.8f, 2.2f), y, z + Random.Range(0.2f, 1.3f));
+        vertices[1] = new Vector3(x + Random.Range(0.8f, 2.2f), y, z + Random.Range(0.2f, 1.3f));
+        vertices[2] = new Vector3(x - Random.Range(0.8f, 2.2f), y, z - Random.Range(0.2f, 1.3f));
+        vertices[3] = new Vector3(x + Random.Range(0.8f, 2.2f), y, z - Random.Range(0.2f, 1.3f));
+
+ 
+        CreateMesh(m_lARRayCastHit[0].pose.position, vertices, setUv(), setTriangles());
+  
+    }
+    int[] setTriangles() {
+        int[] triangles = new int[6];
+        triangles[0] = 0;
+        triangles[1] = 1;
+        triangles[2] = 2;
+        triangles[3] = 2;
+        triangles[4] = 1;
+        triangles[5] = 3;
+        return triangles;
+    }
+    Vector2[] setUv()
+    {
+        Vector2[] uv = new Vector2[4];
+        uv[0] = new Vector2(0, 1);
+        uv[1] = new Vector2(1, 1);
+        uv[2] = new Vector2(0, 0);
+        uv[3] = new Vector2(1, 0);
+        return uv;
+
+    }
+    /*Fonction créant le mesh du sol*/
+    void CreateMesh(Vector3 screenHit, Vector3[] vertices, Vector2[] uv, int[] triangles)
+    {
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.uv = uv;
+        mesh.triangles = triangles;
+
+        GameObject ground = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+        ground.transform.position = screenHit;
+        ground.GetComponent<MeshFilter>().mesh = mesh;
+        ground.GetComponent<MeshRenderer>().material = m_mGroundColor;
+       // m_tTestDebug.text = ground.transform.position.ToString();
     }
     /* Fonction faisant la moyenne des 4 point selectionnés via le AR*/
     void Egalise()
