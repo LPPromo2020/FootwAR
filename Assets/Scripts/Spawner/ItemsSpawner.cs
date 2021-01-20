@@ -18,9 +18,6 @@ public class ItemsSpawner : MonoBehaviour
     public Transform m_TBlueCarSpawn;
     public Transform m_TBallSpawn;
 
-    public BoxCollider m_BCRedGaol;
-    public BoxCollider m_BCBlueGoal;
-
     public GameObject m_GOBallPrefab;
 
     //Ces propriétés sont temporaires pour les phases de tests, il faudrat delete lors de l'intégration du réseaux
@@ -39,8 +36,6 @@ public class ItemsSpawner : MonoBehaviour
     {
         Instantiate(m_GOBallPrefab, m_TBallSpawn);
         Instantiate(m_GOtempCarPrefab, m_TBlueCarSpawn);
-        Instantiate(m_GOtempCarPrefab, m_TRedCarSpawn);
-       
+        Instantiate(m_GOtempCarPrefab, m_TRedCarSpawn);       
     }
-
 }
