@@ -22,7 +22,7 @@ public class groundInitializer : MonoBehaviour
     public List<ARRaycastHit> m_lARRayCastHit; // Liste de point trouvés par le raycastmanager
     public GameObject m_goPlanePrefab; // Prefab du plan
     public Material m_mGroundColor; // Materiel de couleur du terrain
-    public GameObject m_mStadePrefab; // Prefab du stade
+    public GameObject m_GOStadePrefab; // Prefab du stade
     public Text m_tTestDebug; // Texte de debug.
     private bool m_isAlreadyGroundExist = false; // Si un terrain a déjà été posé. A faux par défaut.
     public ARTrackedImageManager m_timImageManager; // Le Tracked Image Manager
@@ -65,7 +65,7 @@ public class groundInitializer : MonoBehaviour
 
     void CreateGround() // Fonction qui permet de créer le terrain.
     {
-        GameObject gameGround = Instantiate(m_mStadePrefab);
+        GameObject gameGround = Instantiate(m_GOStadePrefab);
         gameGround.transform.position = m_lARRayCastHit[0].pose.position;
         gameGround.transform.localScale = new Vector3(6f,6f,6f);
         m_isAlreadyGroundExist = true;

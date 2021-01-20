@@ -186,7 +186,7 @@ MonoBehaviour:
   m_goPlanePrefab: {fileID: 328700553808959333, guid: 9ee4080ddc0ce1644bc9d83a208ead1b,
     type: 3}
   m_mGroundColor: {fileID: 2100000, guid: 83389573daa8370459655508fc9227d4, type: 2}
-  m_mStadePrefab: {fileID: 919132149155446097, guid: ae835ee1ab43ff44f815b6078af1e147,
+  m_GOStadePrefab: {fileID: 981112347224219616, guid: 184e1f5748b79554983e6070fcf95858,
     type: 3}
   m_tTestDebug: {fileID: 0}
   m_timImageManager: {fileID: 27398507}
