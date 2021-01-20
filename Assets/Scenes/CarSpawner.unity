@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 53061465}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -15}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 1174401889}
   m_RootOrder: 2
@@ -196,7 +196,7 @@ Transform:
   m_GameObject: {fileID: 885067004}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 1, z: 15}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 1174401889}
   m_RootOrder: 1
@@ -398,6 +398,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1174401889}
+  - component: {fileID: 1174401890}
   m_Layer: 0
   m_Name: Stade
   m_TagString: Untagged
@@ -425,6 +426,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1174401890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174401888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e1520d71232014e96d1fe6633d8821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TRedCarSpawn: {fileID: 53061466}
+  m_TBlueCarSpawn: {fileID: 885067005}
+  m_TBallSpawn: {fileID: 886615996}
+  m_BCRedGaol: {fileID: 1715401328}
+  m_BCBlueGoal: {fileID: 1578165458}
+  m_GOBall: {fileID: 3543193965709568235, guid: 36273c07b34ae37449e51218f1e4afd7,
+    type: 3}
+  m_MtempCar: {fileID: 7624521202537427299, guid: a12d3051973f3124d8613fb5b0c597fb,
+    type: 3}
 --- !u!1 &1471236418
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,10 +21,10 @@ public class ItemsSpawner : MonoBehaviour
     public BoxCollider m_BCRedGaol;
     public BoxCollider m_BCBlueGoal;
 
-    //public 
+    public GameObject m_GOBallPrefab;
 
     //Ces propriétés sont temporaires pour les phases de tests, il faudrat delete lors de l'intégration du réseaux
-    public Mesh m_MtempCar;
+    public GameObject m_GOtempCarPrefab;
 
 
     //Private properties
@@ -32,11 +32,14 @@ public class ItemsSpawner : MonoBehaviour
 
     private void Start()
     {
-
+        InitArena();
     }
     //Fonction a appeller pour faire spawnner l'ensemble de spawners ( à la création du stade )
     private void InitArena()
     {
+        Instantiate(m_GOBallPrefab, m_TBallSpawn);
+        Instantiate(m_GOtempCarPrefab, m_TBlueCarSpawn);
+        Instantiate(m_GOtempCarPrefab, m_TRedCarSpawn);
        
     }
 
