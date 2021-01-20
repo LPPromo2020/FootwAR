@@ -25,7 +25,7 @@ public class FireBaseManager : Singleton<FireBaseManager>
         m_drRootReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public AuthError GetAuthError(AggregateException exceptions)
+    static public AuthError GetAuthError(AggregateException exceptions)
     {
         foreach (Exception exception in exceptions.Flatten().InnerExceptions)
         {

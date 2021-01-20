@@ -45,7 +45,7 @@ public class UserManager : Singleton<UserManager>
             
             if (task.IsFaulted)
             {
-                error = FireBaseManager.Instance.GetAuthError(task.Exception);
+                error = FireBaseManager.GetAuthError(task.Exception);
                 return;
             }
 
