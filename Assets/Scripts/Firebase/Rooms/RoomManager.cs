@@ -355,6 +355,9 @@ public class RoomManager : Singleton<RoomManager>
     /// </summary>
     /// <returns></returns>
     private IEnumerator CloseAndRemoveRoom() {
+        // if not the creator no delete Room
+        if (!m_bCreator) yield break;
+
         // Get Database reference
         DatabaseReference database = FireBaseManager.Instance.Database;
 
