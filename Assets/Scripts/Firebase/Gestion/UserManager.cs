@@ -25,8 +25,6 @@ public class UserManager : Singleton<UserManager>
     
     public IEnumerator Connection(string email, string password, Action<bool, AuthError> callback)
     {
-        Debug.Log(gameObject.name);
-
         if (email == "" || password == "")
         {
             Debug.LogWarning($"[{GetType()}] Une des information est vide");
@@ -67,7 +65,12 @@ public class UserManager : Singleton<UserManager>
                 case AuthError.UserNotFound:
                     Debug.LogError($"[{GetType()}] Compte non trouvé");
                     break;
+                case AuthError.Failure:
+                    Debug.LogError($"[{GetType()}] Fail dans la connexion du compte");
+                    break;
             }
+
+            Debug.LogError(error);
 
             return false;
         }

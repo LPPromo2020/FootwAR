@@ -38,6 +38,9 @@ public class Connexion : MonoBehaviour
                     case AuthError.WrongPassword:
                         NotificationsManager.Instance.AddNotification("Erreur", "Mot de passe invalide", 2);
                         break;
+                    case AuthError.Failure:
+                        NotificationsManager.Instance.AddNotification("Erreur", "Erreur dans la connexion du compte", 2);
+                        break;
                 }
 
                 if (connect) SceneLoader.LoadScene("MainMenu");               
