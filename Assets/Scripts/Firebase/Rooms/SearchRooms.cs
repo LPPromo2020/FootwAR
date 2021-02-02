@@ -55,6 +55,9 @@ public class SearchRooms : MonoBehaviour
         GameObject go = Instantiate(m_goPrefab, m_tParent);
         string n = (string) room.Child("roomName").Value, guid = room.Key;
 
+        Button button = go.GetComponent<Button>();
+        button.onClick.AddListener(() => StartCoroutine(RoomManager.Instance.ConnectToRoom(guid)));
+
         if ((string) room.Child("password").Value == "")
         {
             DestroyImmediate(go.transform.GetChild(0).GetChild(0).gameObject);
