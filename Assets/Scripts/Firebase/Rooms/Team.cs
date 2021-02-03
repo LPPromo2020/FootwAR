@@ -65,6 +65,13 @@ public class Team
     }
 
     /// <summary>
+    /// Clear player team
+    /// </summary>
+    public void ClearTeam() {
+        m_lstpList.Clear();
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>

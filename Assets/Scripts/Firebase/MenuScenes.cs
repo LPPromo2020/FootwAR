@@ -19,6 +19,7 @@ public class MenuScenes : MonoBehaviour
         RoomManager.Instance.SetCallBackPlayerAdd(UpdateUI);
         RoomManager.Instance.SetCallBackPlayerQuit(UpdateUI);
         AddPlayerSpec();
+        UpdateUI();
     }
 
     /// <summary>
@@ -88,11 +89,19 @@ public class MenuScenes : MonoBehaviour
     /// <param name="parent">Parent</param>
     /// <param name="team">Team</param>
     private void InstancePlayerInList(Transform parent, Team team) {
-        Transform instance;
         foreach (PlayerOnTeam player in team.AllPlayer) {
-            instance = Instantiate(playerInList, parent).transform;
+            Transform instance = Instantiate(playerInList, parent).transform;
             instance.GetChild(0).GetComponent<Text>().text = player.Guid;
         }
+    }
+
+    /// <summary>
+    /// Function for clear team of player and quit Team
+    /// </summary>
+    public void QuitRoom() {
+        RoomManager.Instance.RemoveTeamPlayer();
+        RoomManager.Instance.DisconnectToRoom();
+        SceneLoader.LoadScene("MainMenu");
     }
 
     /// <summary>

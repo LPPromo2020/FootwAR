@@ -11,6 +11,11 @@ public class SearchRooms : MonoBehaviour
     [SerializeField] private GameObject m_goPrefab;
     [SerializeField] private Transform m_tParent;
 
+    [Header("Password Reference")]
+    [SerializeField] private GameObject m_goPassword;
+    [SerializeField] private Button m_bPassword;
+    [SerializeField] private InputField m_ifPassword;
+
     [Header("Settings")]
     [SerializeField] private InputField m_ifSearchInput;
     [SerializeField] private bool m_bPrintAllRooms = false;
@@ -55,30 +60,59 @@ public class SearchRooms : MonoBehaviour
         GameObject go = Instantiate(m_goPrefab, m_tParent);
         string n = (string) room.Child("roomName").Value, guid = room.Key;
 
-        Button button = go.GetComponent<Button>();
-        button.onClick.AddListener(() => StartCoroutine(RoomManager.Instance.ConnectToRoom(guid)));
-
-        if ((string) room.Child("password").Value == "")
-        {
+        if ((string) room.Child("password").Value == "") {
             DestroyImmediate(go.transform.GetChild(0).GetChild(0).gameObject);
         }
 
         go.transform.GetChild(1).GetComponent<Text>().text = n;
         go.transform.GetChild(2).GetComponent<Text>().text = room.Child("players").Value.ToString();
 
-        m_listRooms.Add(new Room(n, guid, go));
+        Room r = new Room(n, guid, room.Child("password").Value.ToString(), go);
+        m_listRooms.Add(r);
+
+        Button button = go.GetComponent<Button>();
+        button.onClick.AddListener(() => ConnectToRoom(r));
+    }
+
+    private void ConnectToRoom(Room room) {
+        if (room.Password != "") {
+            m_goPassword.SetActive(true);
+            
+            m_bPassword.onClick.RemoveAllListeners();
+            m_bPassword.onClick.AddListener(() =>
+                ConnectToRoomWithPassword(room)
+            );
+            return;
+        }
+
+        StartCoroutine(RoomManager.Instance.ConnectToRoom(room.Guid, b => {
+            if (b) SceneLoader.LoadScene("Lobby");
+        }));
+    }
+
+    /// <summary>
+    /// Function to connect room with password
+    /// </summary>
+    /// <param name="room">Room Reference</param>
+    private void ConnectToRoomWithPassword(Room room) {
+        if (room.Password != m_ifPassword.text) {
+            NotificationsManager.Instance.AddNotification("Erreur", "Mauvais mot de passe", 2);
+            return;
+        }
+
+        Debug.Log(room.Guid);
+        StartCoroutine(RoomManager.Instance.ConnectToRoom(room.Guid, b => {
+            if (b) SceneLoader.LoadScene("Lobby");
+        }));
     }
 
     private void RoomIsRemove(object sender, ChildChangedEventArgs args)
     {
-        m_listRooms.ForEach(room =>
-        {
-            if (room.Guid == args.Snapshot.Key)
-            {
-                Destroy(room.View);
-                m_listRooms.Remove(room);
-                return;
-            }
+        m_listRooms.ForEach(room => {
+            if (room.Guid != args.Snapshot.Key) return;
+            
+            Destroy(room.View);
+            m_listRooms.Remove(room);
         });
     }
 
@@ -94,16 +128,19 @@ public class SearchRooms : MonoBehaviour
     {
         private string m_sName;
         private string m_sGuid;
+        private string m_sPassword;
         private GameObject m_goView;
 
         public string Name => m_sName;
         public string Guid => m_sGuid;
+        public string Password => m_sPassword;
         public GameObject View => m_goView;
 
-        public Room(string name, string guid, GameObject view)
+        public Room(string name, string guid, string password, GameObject view)
         {
             m_sName = name;
             m_sGuid = guid;
+            m_sPassword = password;
             m_goView = view;
         }
     }

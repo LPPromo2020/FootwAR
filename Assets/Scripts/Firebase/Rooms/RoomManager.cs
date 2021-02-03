@@ -114,7 +114,6 @@ public class RoomManager : Singleton<RoomManager>
         Task roomCreation = database.Child("rooms").Child(m_sID).SetRawJsonValueAsync(ToJson()).ContinueWith(result => {
             if (result.IsFaulted || result.IsCanceled) {
                 Debug.Log("Erreur dans la création de la salle");
-                return;
             }
         });
 
@@ -278,6 +277,8 @@ public class RoomManager : Singleton<RoomManager>
         // Checked if player is on the team      
         if (t.HaveThisPlayer(data.Key)) {
             t.RemovePlayer(data.Key);
+
+            Debug.Log($"Remove player: {data.Key}");
         }
 
         // Invoke Callback
@@ -290,7 +291,7 @@ public class RoomManager : Singleton<RoomManager>
     /// </summary>
     /// <param name="roomGuid">Room Guid</param>
     /// <returns></returns>
-    public IEnumerator ConnectToRoom(string roomGuid) {
+    public IEnumerator ConnectToRoom(string roomGuid, Action<bool> callback = null) {
         // get user GUID
         string playerGuid = UserManager.Instance.getUser().UserId;
         // Create json information
@@ -308,6 +309,9 @@ public class RoomManager : Singleton<RoomManager>
 
         // Add Callback
         spectatorPlayers.ChildAdded += FirstCallBack;
+        
+        // Callback
+        callback?.Invoke(!t.IsCanceled && !t.IsFaulted);
     }
 
     /// <summary>
@@ -350,6 +354,19 @@ public class RoomManager : Singleton<RoomManager>
     }
 
     /// <summary>
+    /// Disconnect player
+    /// </summary>
+    public void DisconnectToRoom() {
+        if (m_sID == "") return;
+
+        DatabaseReference refDatabase = FireBaseManager.Instance.Database;
+        string playerID = UserManager.Instance.getUser().UserId;
+        
+        refDatabase.Child("rooms").Child(m_sID).Child("teams")
+            .Child(m_sCurrentTeam).Child("players").Child(playerID).RemoveValueAsync();
+    }
+
+    /// <summary>
     /// Va permettre de supprimer la salle et de supprimer touts les callbacks
     /// donnée
     /// </summary>
@@ -373,10 +390,12 @@ public class RoomManager : Singleton<RoomManager>
         room.Child("teams").Child("blue").Child("players").ChildRemoved -= RemoveBluePlayer;
         room.Child("teams").Child("red").Child("players").ChildRemoved -= RemoveRedPlayer;
         room.Child("teams").Child("spectator").Child("players").ChildRemoved -= RemoveSpecPlayer;
-        
-        // Remove callback when player want to change team
-        room.Child("teams").Child("moveplayer").ChildAdded -= PlayerChangeTeam;
-        room.Child("teams").Child("moveplayer").ChildChanged -= PlayerChangeTeam;
+
+        if (m_bCreator) {
+            // Remove callback when player want to change team
+            room.Child("teams").Child("moveplayer").ChildAdded -= PlayerChangeTeam;
+            room.Child("teams").Child("moveplayer").ChildChanged -= PlayerChangeTeam;
+        }
 
         // Remove the room on the database
         Task rm = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).SetRawJsonValueAsync("{}");
@@ -384,6 +403,15 @@ public class RoomManager : Singleton<RoomManager>
 
         // send notification
         NotificationsManager.Instance.AddNotification("Salle Manager", "Suppression de la salle");
+    }
+
+    /// <summary>
+    /// Remove player of All team
+    /// </summary>
+    public void RemoveTeamPlayer() {
+        m_tBlue.ClearTeam();
+        m_tRed.ClearTeam();
+        m_tSpectator.ClearTeam();
     }
 
     /// <summary>
@@ -480,6 +508,8 @@ public class RoomManager : Singleton<RoomManager>
             // remove player request to change team
             RemovePlayerRequest(player.Key);
         }
+
+        Debug.Log(player.Key);
     }
 
     /// <summary>
@@ -495,7 +525,7 @@ public class RoomManager : Singleton<RoomManager>
         
         // si le nom de l'équipe est vide ne lance par la
         if (team != "") {
-            Task t = d.Child(team).Child("players").Child(player.Key).RemoveValueAsync();
+            Task t = d.Child(team).Child("players").Child(player.Key).SetRawJsonValueAsync("{}");
             while (!t.IsCompleted) yield return null;
         }
 
@@ -508,7 +538,7 @@ public class RoomManager : Singleton<RoomManager>
             AuthError error = FireBaseManager.GetAuthError(t2.Exception);
 
             switch (error) {
-                case Firebase.Auth.AuthError.Failure:
+                case AuthError.Failure:
                     NotificationsManager.Instance.AddNotification("Erreur", "N'a pas pus Changer les valeurs");
                 break;
             }
@@ -528,7 +558,7 @@ public class RoomManager : Singleton<RoomManager>
     /// </summary>
     /// <param name="playerGuid"></param>
     private void RemovePlayerRequest(string playerGuid) {
-        DatabaseReference moveplayers = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).Child("teams").Child("moveplayers");
+        DatabaseReference moveplayers = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).Child("teams").Child("moveplayer");
         moveplayers.Child(playerGuid).SetRawJsonValueAsync("{}");
     }
 
@@ -536,7 +566,7 @@ public class RoomManager : Singleton<RoomManager>
     /// Va supprimer la salle créé
     /// </summary>
     ~RoomManager() {
-        CloseAndRemoveRoom();
+        StartCoroutine(CloseAndRemoveRoom());
     }
 
     /// <summary>
