@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -96,12 +97,17 @@ public class MenuScenes : MonoBehaviour
     }
 
     /// <summary>
-    /// Function for clear team of player and quit Team
+    /// Function for clear team of player and quit Team and
+    /// remove room if is creator
     /// </summary>
     public void QuitRoom() {
         RoomManager.Instance.RemoveTeamPlayer();
         RoomManager.Instance.DisconnectToRoom();
-        SceneLoader.LoadScene("MainMenu");
+
+        if (!RoomManager.Instance.IsCreator || RoomManager.Instance.GUID == string.Empty) return;
+        StartCoroutine(RoomManager.Instance.CloseAndRemoveRoom(b => {
+            if (b) SceneLoader.LoadScene("MainMenu");
+        }));
     }
 
     /// <summary>

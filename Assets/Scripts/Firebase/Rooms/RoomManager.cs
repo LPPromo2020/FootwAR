@@ -18,11 +18,12 @@ public class RoomManager : Singleton<RoomManager>
     private int m_iMaxPlayer;
     private int m_iPlayerConnected = 0;
     private string m_sPassword;
-    private string m_sNameRoom;
+    private string m_sNameRoom = string.Empty;
     private float m_fStartTime;
 
     // Getter
     public string GUID => m_sID;
+    public bool IsCreator => m_bCreator;
 
     // Ajouter les équipes
     private Team m_tBlue = new Team(TeamColor.BLUE);
@@ -371,10 +372,10 @@ public class RoomManager : Singleton<RoomManager>
     /// donnée
     /// </summary>
     /// <returns></returns>
-    private IEnumerator CloseAndRemoveRoom() {
+    public IEnumerator CloseAndRemoveRoom(Action<bool> callback = null) {
         // if not the creator no delete Room
-        if (!m_bCreator) yield break;
-
+        if (!m_bCreator || m_sNameRoom == string.Empty) yield break;
+        
         // Get Database reference
         DatabaseReference database = FireBaseManager.Instance.Database;
 
@@ -400,9 +401,16 @@ public class RoomManager : Singleton<RoomManager>
         // Remove the room on the database
         Task rm = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).SetRawJsonValueAsync("{}");
         while (!rm.IsCompleted) yield return null;
+        
+        // Reset room name
+        m_sNameRoom = string.Empty;
 
         // send notification
         NotificationsManager.Instance.AddNotification("Salle Manager", "Suppression de la salle");
+        
+        // CallBack and if delete is not canceled or faulted
+        // the remove is good
+        callback?.Invoke(!rm.IsCanceled && !rm.IsFaulted);
     }
 
     /// <summary>
@@ -563,9 +571,11 @@ public class RoomManager : Singleton<RoomManager>
     }
 
     /// <summary>
-    /// Va supprimer la salle créé
+    /// Call when application quit
+    /// On remove Room only is creator and is a room
+    /// is create
     /// </summary>
-    ~RoomManager() {
+    private void OnApplicationQuit() {
         StartCoroutine(CloseAndRemoveRoom());
     }
 
