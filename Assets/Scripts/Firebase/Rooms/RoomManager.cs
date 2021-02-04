@@ -165,6 +165,9 @@ public class RoomManager : Singleton<RoomManager>
             Debug.LogError("NewMemberOnTeam: " + args.DatabaseError.Message);
             return;
         }
+        
+        if (args.Snapshot.Key == UserManager.Instance.getUser().UserId)
+            m_sCurrentTeam = "blue";
 
         NewMemberOnTeam(args, m_tBlue);
     }
@@ -179,6 +182,9 @@ public class RoomManager : Singleton<RoomManager>
             Debug.LogError("NewMemberOnTeam: " + args.DatabaseError.Message);
             return;
         }
+        
+        if (args.Snapshot.Key == UserManager.Instance.getUser().UserId)
+            m_sCurrentTeam = "red";
 
         NewMemberOnTeam(args, m_tRed);
     }
@@ -194,6 +200,9 @@ public class RoomManager : Singleton<RoomManager>
             return;
         }
 
+        if (args.Snapshot.Key == UserManager.Instance.getUser().UserId)
+            m_sCurrentTeam = "spectator";
+        
         NewMemberOnTeam(args, m_tSpectator);
     }
 
@@ -212,6 +221,8 @@ public class RoomManager : Singleton<RoomManager>
         // checked if this does not have this player
         if (!t.HaveThisPlayer(data.Key)) {
             t.AddPlayer(new PlayerOnTeam(data.Key));
+            
+            Debug.Log($"Add player {t}: {data.Key}");
         }
 
         // invoke the callback
@@ -455,6 +466,7 @@ public class RoomManager : Singleton<RoomManager>
     /// to change team
     /// </summary>
     /// <param name="newTeam"></param>
+    /// <param name="guidRoom"></param>
     /// <returns></returns>
     public IEnumerator ChangeTeam(string newTeam, string guidRoom) {
         // if newTeam have the same name of the current quit function
@@ -532,8 +544,8 @@ public class RoomManager : Singleton<RoomManager>
         DatabaseReference d = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).Child("teams");
         
         // si le nom de l'équipe est vide ne lance par la
-        if (team != "") {
-            Task t = d.Child(team).Child("players").Child(player.Key).SetRawJsonValueAsync("{}");
+        if (team != string.Empty) {
+            Task t = d.Child(team).Child("players").Child(player.Key).RemoveValueAsync();
             while (!t.IsCompleted) yield return null;
         }
 
@@ -544,11 +556,9 @@ public class RoomManager : Singleton<RoomManager>
         // regarde si une erreur est survenue
         if (t2.IsFaulted || t2.IsCanceled) {
             AuthError error = FireBaseManager.GetAuthError(t2.Exception);
-
-            switch (error) {
-                case AuthError.Failure:
-                    NotificationsManager.Instance.AddNotification("Erreur", "N'a pas pus Changer les valeurs");
-                break;
+            
+            if (error == AuthError.Failure) {
+                NotificationsManager.Instance.AddNotification("Erreur", "N'a pas pus Changer les valeurs");
             }
         }
 
@@ -567,7 +577,7 @@ public class RoomManager : Singleton<RoomManager>
     /// <param name="playerGuid"></param>
     private void RemovePlayerRequest(string playerGuid) {
         DatabaseReference moveplayers = FireBaseManager.Instance.Database.Child("rooms").Child(m_sID).Child("teams").Child("moveplayer");
-        moveplayers.Child(playerGuid).SetRawJsonValueAsync("{}");
+        moveplayers.Child(playerGuid).RemoveValueAsync();
     }
 
     /// <summary>
@@ -586,6 +596,6 @@ public class RoomManager : Singleton<RoomManager>
     /// <returns></returns>
     public Team[] getTeams()
     {
-        return new Team[] { m_tRed, m_tBlue, m_tSpectator };
+        return new [] { m_tRed, m_tBlue, m_tSpectator };
     }
 }

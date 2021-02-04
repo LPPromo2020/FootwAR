@@ -101,11 +101,13 @@ public class MenuScenes : MonoBehaviour
     /// remove room if is creator
     /// </summary>
     public void QuitRoom() {
-        RoomManager.Instance.RemoveTeamPlayer();
-        RoomManager.Instance.DisconnectToRoom();
+        RoomManager instance = RoomManager.Instance;
+        
+        instance.RemoveTeamPlayer();
+        instance.DisconnectToRoom();
 
-        if (!RoomManager.Instance.IsCreator || RoomManager.Instance.GUID == string.Empty) return;
-        StartCoroutine(RoomManager.Instance.CloseAndRemoveRoom(b => {
+        if (!instance.IsCreator || instance.GUID == string.Empty) return;
+        StartCoroutine(instance.CloseAndRemoveRoom(b => {
             if (b) SceneLoader.LoadScene("MainMenu");
         }));
     }

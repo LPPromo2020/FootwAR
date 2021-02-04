@@ -10,6 +10,14 @@ public class UserManager : Singleton<UserManager>
     private FirebaseUser m_fuUser;
     private string m_sConnectionNameFunction;
 
+    /// <summary>
+    /// Create Account
+    /// </summary>
+    /// <param name="pseudo"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
     public IEnumerator CreateAccount(string pseudo, string email, string password, Action<AuthError> callback = null) {
         Task<FirebaseUser> createUser = FireBaseManager.Instance.Auth.CreateUserWithEmailAndPasswordAsync(email, password);
         while (!createUser.IsCompleted) yield return null;
@@ -19,10 +27,16 @@ public class UserManager : Singleton<UserManager>
         Task updateUserPseudo = m_fuUser.UpdateUserProfileAsync(new UserProfile { DisplayName = pseudo });
         while (!updateUserPseudo.IsCompleted) yield return null;
 
-        Task adduserInfo = FireBaseManager.Instance.Database.Child("players").Child(m_fuUser.UserId).SetRawJsonValueAsync("{\"nbDefeats\":0,\"nbVictorys\":0}");
-        Debug.Log(m_fuUser.DisplayName);
+        FireBaseManager.Instance.Database.Child("players").Child(m_fuUser.UserId).SetRawJsonValueAsync("{\"nbDefeats\":0,\"nbVictorys\":0}");
     }
     
+    /// <summary>
+    /// Connect to a account
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
     public IEnumerator Connection(string email, string password, Action<bool, AuthError> callback)
     {
         if (email == "" || password == "")
@@ -50,9 +64,14 @@ public class UserManager : Singleton<UserManager>
 
         while (!thread.IsCompleted) yield return null;
 
-        callback(ConnectionEnd(error), error);
+        callback?.Invoke(ConnectionEnd(error), error);
     }
 
+    /// <summary>
+    /// Verif if connection is good and don't have error
+    /// </summary>
+    /// <param name="error"></param>
+    /// <returns></returns>
     private bool ConnectionEnd(AuthError error)
     {
         if (error != AuthError.None)
@@ -70,21 +89,22 @@ public class UserManager : Singleton<UserManager>
                     break;
             }
 
-            Debug.LogError(error);
-
             return false;
         }
         return true;
     }
     
-    public void Disconnect()
-    {
+    /// <summary>
+    /// Disconnection
+    /// </summary>
+    public void Disconnect() {
         m_fuUser = null;
         FireBaseManager.Instance.Auth.SignOut();
     }
 
-    public FirebaseUser getUser()
-    {
-        return m_fuUser;
-    }
+    /// <summary>
+    /// Getter of user
+    /// </summary>
+    /// <returns></returns>
+    public FirebaseUser getUser() => m_fuUser;
 }
