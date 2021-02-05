@@ -4,7 +4,7 @@ using UnityEngine;
 
 /*
  Nom des auteurs : Marc et Dorian
- Principe du script : instanciation des différents éléments de jeux
+ Principe du script : instanciation des voiture de la balle et référence les deux buts
  Utilisation : à placer sur le stade avec tout les points de spawn qu'il faudra référencer dans l'inspector
  */
 
